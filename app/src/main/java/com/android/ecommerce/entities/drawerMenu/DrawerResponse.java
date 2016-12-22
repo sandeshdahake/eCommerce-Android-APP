@@ -1,11 +1,12 @@
 package com.android.ecommerce.entities.drawerMenu;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-public class DrawerResponse {
+public class DrawerResponse  {
 
     private List<DrawerItemCategory> navigation;
-    private List<DrawerItemPage> pages;
+   // private List<DrawerItemPage> pages;
 
     public DrawerResponse() {
     }
@@ -18,7 +19,7 @@ public class DrawerResponse {
         this.navigation = navigation;
     }
 
-    public List<DrawerItemPage> getPages() {
+    /*public List<DrawerItemPage> getPages() {
         return pages;
     }
 
@@ -51,5 +52,5 @@ public class DrawerResponse {
                 "navigation=" + navigation +
                 ", pages=" + pages +
                 '}';
-    }
+    }*/
 }

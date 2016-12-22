@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.android.ecommerce.R;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemCategory;
+import com.android.ecommerce.entities.drawerMenu.DrawerItemSubCategory;
 import com.android.ecommerce.interfaces.DrawerSubmenuRecyclerInterface;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class DrawerSubmenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
 
     private final DrawerSubmenuRecyclerInterface drawerSubmenuRecyclerInterface;
     private LayoutInflater layoutInflater;
-    private List<DrawerItemCategory> drawerItemCategoryList = new ArrayList<>();
+    private List<DrawerItemSubCategory> drawerItemCategoryList = new ArrayList<>();
 
     /**
      * Creates an adapter that handles a list of drawer sub-items.
@@ -48,7 +49,7 @@ public class DrawerSubmenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolderItemCategory viewHolderItemCategory = (ViewHolderItemCategory) holder;
 
-        DrawerItemCategory drawerItemCategory = getDrawerItem(position);
+        DrawerItemSubCategory drawerItemCategory = getDrawerItem(position);
         viewHolderItemCategory.bindContent(drawerItemCategory);
         viewHolderItemCategory.itemText.setText(drawerItemCategory.getName());
         viewHolderItemCategory.subMenuIndicator.setVisibility(View.INVISIBLE);
@@ -62,11 +63,11 @@ public class DrawerSubmenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
 
-    private DrawerItemCategory getDrawerItem(int position) {
+    private DrawerItemSubCategory getDrawerItem(int position) {
         return drawerItemCategoryList.get(position);
     }
 
-    public void changeDrawerItems(List<DrawerItemCategory> children) {
+    public void changeDrawerItems(List<DrawerItemSubCategory> children) {
         drawerItemCategoryList.clear();
         drawerItemCategoryList.addAll(children);
         notifyDataSetChanged();
@@ -78,7 +79,7 @@ public class DrawerSubmenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
         public TextView itemText;
         public ImageView subMenuIndicator;
         public LinearLayout layout;
-        private DrawerItemCategory drawerItemCategory;
+        private DrawerItemSubCategory drawerItemCategory;
 
         public ViewHolderItemCategory(View itemView, final DrawerSubmenuRecyclerInterface drawerSubmenuRecyclerInterface) {
             super(itemView);
@@ -93,7 +94,7 @@ public class DrawerSubmenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
             });
         }
 
-        public void bindContent(DrawerItemCategory drawerItemCategory) {
+        public void bindContent(DrawerItemSubCategory drawerItemCategory) {
             this.drawerItemCategory = drawerItemCategory;
         }
     }

@@ -29,6 +29,7 @@ import com.android.ecommerce.api.EndPoints;
 import com.android.ecommerce.api.GsonRequest;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemCategory;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemPage;
+import com.android.ecommerce.entities.drawerMenu.DrawerItemSubCategory;
 import com.android.ecommerce.entities.drawerMenu.DrawerResponse;
 import com.android.ecommerce.interfaces.DrawerRecyclerInterface;
 import com.android.ecommerce.interfaces.DrawerSubmenuRecyclerInterface;
@@ -129,7 +130,7 @@ public class DrawerFragment extends Fragment {
         drawerRecyclerAdapter = new DrawerRecyclerAdapter(getContext(), new DrawerRecyclerInterface() {
             @Override
             public void onCategorySelected(View v, DrawerItemCategory drawerItemCategory) {
-                if (drawerItemCategory.getChildren() == null || drawerItemCategory.getChildren().isEmpty()) {
+                if (drawerItemCategory.getSubcategories() == null || drawerItemCategory.getSubcategories().isEmpty()) {
                     if (drawerListener != null) {
                         if (drawerItemCategory.getId() == BANNERS_ID)
                             drawerListener.onDrawerBannersSelected();
@@ -170,9 +171,9 @@ public class DrawerFragment extends Fragment {
         RecyclerView drawerSubmenuRecycler = (RecyclerView) view.findViewById(R.id.drawer_submenu_recycler);
         drawerSubmenuRecyclerAdapter = new DrawerSubmenuRecyclerAdapter(new DrawerSubmenuRecyclerInterface() {
             @Override
-            public void onSubCategorySelected(View v, DrawerItemCategory drawerItemCategory) {
+            public void onSubCategorySelected(View v, DrawerItemSubCategory drawerItemCategory) {
                 if (drawerListener != null) {
-                    drawerListener.onDrawerItemCategorySelected(drawerItemCategory);
+                    drawerListener.onDrawerItemSubCategorySelected(drawerItemCategory);
                     closeDrawerMenu();
                 }
             }
@@ -288,7 +289,7 @@ public class DrawerFragment extends Fragment {
             public void onResponse(@NonNull DrawerResponse drawerResponse) {
                 drawerRecyclerAdapter.addDrawerItem(new DrawerItemCategory(BANNERS_ID, BANNERS_ID, getString(R.string.Just_arrived)));
                 drawerRecyclerAdapter.addDrawerItemList(drawerResponse.getNavigation());
-                drawerRecyclerAdapter.addPageItemList(drawerResponse.getPages());
+               // drawerRecyclerAdapter.addPageItemList(drawerResponse.getPages());
                 drawerRecyclerAdapter.notifyDataSetChanged();
 
                 if (drawerListener != null)
@@ -306,7 +307,7 @@ public class DrawerFragment extends Fragment {
                 if (drawerProgress != null) drawerProgress.setVisibility(View.GONE);
                 if (drawerRetryBtn != null) drawerRetryBtn.setVisibility(View.VISIBLE);
             }
-        });
+        },null,null,CONST.DRAWER_REQUESTS_TAG);
         getDrawerMenu.setRetryPolicy(MyApplication.getDefaultRetryPolice());
         getDrawerMenu.setShouldCache(false);
         MyApplication.getInstance().addToRequestQueue(getDrawerMenu, CONST.DRAWER_REQUESTS_TAG);
@@ -337,7 +338,7 @@ public class DrawerFragment extends Fragment {
     private void animateSubListShow(DrawerItemCategory drawerItemCategory) {
         if (drawerItemCategory != null) {
             drawerSubmenuTitle.setText(drawerItemCategory.getName());
-            drawerSubmenuRecyclerAdapter.changeDrawerItems(drawerItemCategory.getChildren());
+            drawerSubmenuRecyclerAdapter.changeDrawerItems(drawerItemCategory.getSubcategories());
             Animation slideInDisappear = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_disappear);
             final Animation slideInAppear = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_appear);
             slideInDisappear.setAnimationListener(new Animation.AnimationListener() {
@@ -397,6 +398,12 @@ public class DrawerFragment extends Fragment {
          */
         void onDrawerItemCategorySelected(DrawerItemCategory drawerItemCategory);
 
+        /**
+         * Launch { CategoryFragment}.
+         *
+         * @param drawerItemCategory object specifying selected item in the drawer.
+         */
+        void onDrawerItemSubCategorySelected(DrawerItemSubCategory drawerItemCategory);
         /**
          * Launch { PageFragment}, with downloadable content.
          *

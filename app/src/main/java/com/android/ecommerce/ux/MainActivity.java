@@ -52,6 +52,7 @@ import com.android.ecommerce.MyApplication;
 import com.android.ecommerce.R;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemCategory;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemPage;
+import com.android.ecommerce.entities.drawerMenu.DrawerItemSubCategory;
 import com.android.ecommerce.utils.MsgUtils;
 import com.android.ecommerce.utils.Utils;
 import com.android.ecommerce.ux.fragments.BannersFragment;
@@ -259,9 +260,9 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
                 }
 
                 if (navigation.get(i).hasChildren()) {
-                    for (int j = 0; j < navigation.get(i).getChildren().size(); j++) {
-                        if (!searchSuggestionsList.contains(navigation.get(i).getChildren().get(j).getName())) {
-                            searchSuggestionsList.add(navigation.get(i).getChildren().get(j).getName());
+                    for (int j = 0; j < navigation.get(i).getSubcategories().size(); j++) {
+                        if (!searchSuggestionsList.contains(navigation.get(i).getSubcategories().get(j).getName())) {
+                            searchSuggestionsList.add(navigation.get(i).getSubcategories().get(j).getName());
                         }
                     }
                 }
@@ -359,6 +360,11 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
 
     @Override
     public void onDrawerItemCategorySelected(DrawerItemCategory drawerItemCategory) {
+
+    }
+
+    @Override
+    public void onDrawerItemSubCategorySelected(DrawerItemSubCategory drawerItemCategory) {
 
     }
 

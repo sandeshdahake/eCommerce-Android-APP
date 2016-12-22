@@ -82,7 +82,7 @@ public class DrawerRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 viewHolderItemCategory.itemText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                 viewHolderItemCategory.divider.setVisibility(View.GONE);
             }
-            if (drawerItemCategory.getChildren() == null || drawerItemCategory.getChildren().isEmpty()) {
+            if (drawerItemCategory.getSubcategories() == null || drawerItemCategory.getSubcategories().isEmpty()) {
                 viewHolderItemCategory.subMenuIndicator.setVisibility(View.INVISIBLE);
             } else {
                 viewHolderItemCategory.subMenuIndicator.setVisibility(View.VISIBLE);
