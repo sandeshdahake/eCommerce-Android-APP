@@ -6,29 +6,29 @@ import java.util.List;
 
 public class DrawerItemCategory {
 
-    private long id;
+    private long Id;
 
-    @SerializedName("original_id")
+    @SerializedName("original_Id")
     private long originalId;
-    private String name;
+    private String Name;
     private List<DrawerItemCategory> children;
     private String type;
 
     public DrawerItemCategory() {
     }
 
-    public DrawerItemCategory(long id, long originalId, String name) {
-        this.id = id;
+    public DrawerItemCategory(long Id, long originalId, String Name) {
+        this.Id = Id;
         this.originalId = originalId;
-        this.name = name;
+        this.Name = Name;
     }
 
     public long getId() {
-        return id;
+        return Id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(long Id) {
+        this.Id = Id;
     }
 
     public long getOriginalId() {
@@ -40,11 +40,11 @@ public class DrawerItemCategory {
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String Name) {
+        this.Name = Name;
     }
 
     public List<DrawerItemCategory> getChildren() {
@@ -70,9 +70,9 @@ public class DrawerItemCategory {
 
         DrawerItemCategory that = (DrawerItemCategory) o;
 
-        if (id != that.id) return false;
+        if (Id != that.Id) return false;
         if (originalId != that.originalId) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (Name != null ? !Name.equals(that.Name) : that.Name != null) return false;
         if (children != null ? !children.equals(that.children) : that.children != null)
             return false;
         return !(type != null ? !type.equals(that.type) : that.type != null);
@@ -81,9 +81,9 @@ public class DrawerItemCategory {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (Id ^ (Id >>> 32));
         result = 31 * result + (int) (originalId ^ (originalId >>> 32));
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (Name != null ? Name.hashCode() : 0);
         result = 31 * result + (children != null ? children.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
@@ -92,9 +92,9 @@ public class DrawerItemCategory {
     @Override
     public String toString() {
         return "DrawerItemCategory{" +
-                "id=" + id +
+                "Id=" + Id +
                 ", originalId=" + originalId +
-                ", name='" + name + '\'' +
+                ", Name='" + Name + '\'' +
                 ", children=" + children +
                 ", type='" + type + '\'' +
                 '}';

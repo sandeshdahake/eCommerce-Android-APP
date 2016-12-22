@@ -26,10 +26,12 @@ import com.android.ecommerce.CONST;
 import com.android.ecommerce.MyApplication;
 import com.android.ecommerce.R;
 import com.android.ecommerce.api.EndPoints;
+import com.android.ecommerce.api.GsonRequest;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemCategory;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemPage;
 import com.android.ecommerce.entities.drawerMenu.DrawerResponse;
 import com.android.ecommerce.interfaces.DrawerRecyclerInterface;
+import com.android.ecommerce.interfaces.DrawerSubmenuRecyclerInterface;
 import com.android.ecommerce.utils.MsgUtils;
 import com.android.ecommerce.ux.adapters.DrawerRecyclerAdapter;
 import com.android.ecommerce.ux.adapters.DrawerSubmenuRecyclerAdapter;
@@ -91,6 +93,8 @@ public class DrawerFragment extends Fragment {
         drawerRetryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!drawerLoading)
+                    getDrawerItems();
             }
         });
 
@@ -110,6 +114,7 @@ public class DrawerFragment extends Fragment {
             }
         });
 
+        getDrawerItems();
 
         return layout;
     }
@@ -163,9 +168,19 @@ public class DrawerFragment extends Fragment {
         drawerRecycler.setAdapter(drawerRecyclerAdapter);
 
         RecyclerView drawerSubmenuRecycler = (RecyclerView) view.findViewById(R.id.drawer_submenu_recycler);
+        drawerSubmenuRecyclerAdapter = new DrawerSubmenuRecyclerAdapter(new DrawerSubmenuRecyclerInterface() {
+            @Override
+            public void onSubCategorySelected(View v, DrawerItemCategory drawerItemCategory) {
+                if (drawerListener != null) {
+                    drawerListener.onDrawerItemCategorySelected(drawerItemCategory);
+                    closeDrawerMenu();
+                }
+            }
+        });
         drawerSubmenuRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         drawerSubmenuRecycler.setItemAnimator(new DefaultItemAnimator());
         drawerSubmenuRecycler.setHasFixedSize(true);
+        drawerSubmenuRecycler.setAdapter(drawerSubmenuRecyclerAdapter);
     }
 
     /**
@@ -262,7 +277,40 @@ public class DrawerFragment extends Fragment {
         }
     }
 
+    private void getDrawerItems() {
+        drawerLoading = true;
+        drawerProgress.setVisibility(View.VISIBLE);
+        drawerRetryBtn.setVisibility(View.GONE);
 
+        String url = String.format(EndPoints.NAVIGATION_DRAWER);
+        GsonRequest<DrawerResponse> getDrawerMenu = new GsonRequest<>(Request.Method.GET, url, null, DrawerResponse.class, new Response.Listener<DrawerResponse>() {
+            @Override
+            public void onResponse(@NonNull DrawerResponse drawerResponse) {
+                drawerRecyclerAdapter.addDrawerItem(new DrawerItemCategory(BANNERS_ID, BANNERS_ID, getString(R.string.Just_arrived)));
+                drawerRecyclerAdapter.addDrawerItemList(drawerResponse.getNavigation());
+                drawerRecyclerAdapter.addPageItemList(drawerResponse.getPages());
+                drawerRecyclerAdapter.notifyDataSetChanged();
+
+                if (drawerListener != null)
+                    drawerListener.prepareSearchSuggestions(drawerResponse.getNavigation());
+
+                drawerLoading = false;
+                if (drawerRecycler != null) drawerRecycler.setVisibility(View.VISIBLE);
+                if (drawerProgress != null) drawerProgress.setVisibility(View.GONE);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MsgUtils.logAndShowErrorMessage(getActivity(), error);
+                drawerLoading = false;
+                if (drawerProgress != null) drawerProgress.setVisibility(View.GONE);
+                if (drawerRetryBtn != null) drawerRetryBtn.setVisibility(View.VISIBLE);
+            }
+        });
+        getDrawerMenu.setRetryPolicy(MyApplication.getDefaultRetryPolice());
+        getDrawerMenu.setShouldCache(false);
+        MyApplication.getInstance().addToRequestQueue(getDrawerMenu, CONST.DRAWER_REQUESTS_TAG);
+    }
 
     private void animateSubListHide() {
         Animation slideAwayDisappear = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_away_disappear);
@@ -337,14 +385,35 @@ public class DrawerFragment extends Fragment {
      */
     public interface FragmentDrawerListener {
 
+        /**
+         * Launch {@link BannersFragment}. If fragment is already launched nothing happen.
+         */
         void onDrawerBannersSelected();
 
+        /**
+         * Launch { CategoryFragment}.
+         *
+         * @param drawerItemCategory object specifying selected item in the drawer.
+         */
         void onDrawerItemCategorySelected(DrawerItemCategory drawerItemCategory);
 
+        /**
+         * Launch { PageFragment}, with downloadable content.
+         *
+         * @param drawerItemPage id of page for download and display. (Define in OpenShop server administration)
+         */
         void onDrawerItemPageSelected(DrawerItemPage drawerItemPage);
 
+        /**
+         * Launch {AccountFragment}.
+         */
         void onAccountSelected();
 
+        /**
+         * Prepare all search strings for search whisperer.
+         *
+         * @param navigation items for suggestions generating.
+         */
         void prepareSearchSuggestions(List<DrawerItemCategory> navigation);
     }
 }

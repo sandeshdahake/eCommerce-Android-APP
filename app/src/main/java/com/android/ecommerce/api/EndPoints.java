@@ -7,11 +7,11 @@ public class EndPoints {
     /**
      * Base server url.
      */
-    private static final String API_URL                  = "http://77.93.198.186/v1.2/";    // staging
+    private static final String API_URL                  = "http://comparedunia.net.in";    // staging
 
     public static final String SHOPS                    = API_URL.concat(CONST.ORGANIZATION_ID + "/shops");
     public static final String SHOPS_SINGLE             = API_URL.concat(CONST.ORGANIZATION_ID + "/shops/%d");
-    public static final String NAVIGATION_DRAWER        = API_URL.concat("%d/navigation_drawer");
+    public static final String NAVIGATION_DRAWER        = API_URL.concat("/ProductAPI/menu");
     public static final String BANNERS                  = API_URL.concat("%d/banners");
     public static final String PAGES_SINGLE             = API_URL.concat("%d/pages/%d");
     public static final String PAGES_TERMS_AND_COND     = API_URL.concat("%d/pages/terms");

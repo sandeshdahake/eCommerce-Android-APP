@@ -24,6 +24,7 @@ import android.database.MatrixCursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -155,6 +156,11 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
 
        //  addInitialFragment();
 
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
     }
 
 

@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.ecommerce.R;
+import com.android.ecommerce.entities.User;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemCategory;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemPage;
 import com.android.ecommerce.interfaces.DrawerRecyclerInterface;
@@ -95,14 +96,12 @@ public class DrawerRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else if (holder instanceof ViewHolderHeader) {
             ViewHolderHeader viewHolderHeader = (ViewHolderHeader) holder;
 
-/*
-            User user = SettingsMy.getActiveUser();
+            User user = null;
             if (user != null) {
-                viewHolderHeader.userName.setText(user.getEmail());
+                //viewHolderHeader.userName.setText(user.getEmail());
             } else {
                 viewHolderHeader.userName.setText(context.getString(R.string.Unknown_user));
             }
-*/
         }
     }
 
@@ -188,7 +187,7 @@ public class DrawerRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                  //  drawerRecyclerInterface.onPageSelected(v, drawerItemPage);
+                    drawerRecyclerInterface.onPageSelected(v, drawerItemPage);
                 }
             });
         }
@@ -215,7 +214,7 @@ public class DrawerRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             itemView.setOnClickListener(new OnSingleClickListener() {
                 @Override
                 public void onSingleClick(View v) {
-                   // drawerRecyclerInterface.onCategorySelected(v, drawerItemCategory);
+                    drawerRecyclerInterface.onCategorySelected(v, drawerItemCategory);
                 }
             });
         }
