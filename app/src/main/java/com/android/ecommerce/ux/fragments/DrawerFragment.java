@@ -27,6 +27,7 @@ import com.android.ecommerce.MyApplication;
 import com.android.ecommerce.R;
 import com.android.ecommerce.api.EndPoints;
 import com.android.ecommerce.api.GsonRequest;
+import com.android.ecommerce.entities.BannerProducts;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemCategory;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemPage;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemSubCategory;
@@ -404,6 +405,10 @@ public class DrawerFragment extends Fragment {
          * @param drawerItemCategory object specifying selected item in the drawer.
          */
         void onDrawerItemSubCategorySelected(DrawerItemSubCategory drawerItemCategory);
+
+
+        void onBannerProductSelected(BannerProducts product);
+
         /**
          * Launch { PageFragment}, with downloadable content.
          *

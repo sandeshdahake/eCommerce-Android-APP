@@ -7,12 +7,14 @@ public class EndPoints {
     /**
      * Base server url.
      */
-    private static final String API_URL                  = "http://comparedunia.net.in";    // staging
+    private static final String API_URL                 = "http://comparedunia.net.in";    // staging
+    public static final String NAVIGATION_DRAWER        = API_URL.concat("/ProductAPI/menu");
+    public static final String BANNERS                  = API_URL.concat("/ProductAPI/homepage_slider");
+    public static final String BANNERS_FEATURED         = API_URL.concat("/ProductAPI/featured_products");
+    public static final String BANNERS_POPULAR          = API_URL.concat("/ProductAPI/popular_products");
 
     public static final String SHOPS                    = API_URL.concat(CONST.ORGANIZATION_ID + "/shops");
     public static final String SHOPS_SINGLE             = API_URL.concat(CONST.ORGANIZATION_ID + "/shops/%d");
-    public static final String NAVIGATION_DRAWER        = API_URL.concat("/ProductAPI/menu");
-    public static final String BANNERS                  = API_URL.concat("%d/banners");
     public static final String PAGES_SINGLE             = API_URL.concat("%d/pages/%d");
     public static final String PAGES_TERMS_AND_COND     = API_URL.concat("%d/pages/terms");
     public static final String PRODUCTS                 = API_URL.concat("%d/products");

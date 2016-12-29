@@ -33,7 +33,7 @@
 
 
     <!-- Products related strings -->
-    <string name="Just_arrived">Just arrived</string>
+    <string name="Just_arrived">Home</string>
     <string name="No_banners">No banners</string>
     <string name="Show_offers">Show offers</string>
     <string name="FILTER">FILTER</string>

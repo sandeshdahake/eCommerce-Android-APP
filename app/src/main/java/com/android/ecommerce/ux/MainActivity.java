@@ -50,6 +50,8 @@ import com.android.ecommerce.BuildConfig;
 import com.android.ecommerce.CONST;
 import com.android.ecommerce.MyApplication;
 import com.android.ecommerce.R;
+import com.android.ecommerce.entities.Banner;
+import com.android.ecommerce.entities.BannerProducts;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemCategory;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemPage;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemSubCategory;
@@ -345,11 +347,22 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
     @Override
     public void onDrawerBannersSelected() {
         clearBackStack();
-
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.main_content_frame);
+        if (f == null || !(f instanceof BannersFragment)) {
+            Fragment fragment = new BannersFragment();
+            replaceFragment(fragment, BannersFragment.class.getSimpleName());
+        } else {
+            Timber.d("Banners already displayed.");
+        }
     }
 
     @Override
     public void onAccountSelected() {
+
+    }
+
+    @Override
+    public void onBannerProductSelected(BannerProducts product) {
 
     }
 
@@ -365,29 +378,16 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
 
     @Override
     public void onDrawerItemSubCategorySelected(DrawerItemSubCategory drawerItemCategory) {
+        clearBackStack();
+       // Fragment fragment = CategoryFragment.newInstance(drawerItemCategory);
+       // replaceFragment(fragment, CategoryFragment.class.getSimpleName());
 
     }
 
 
     @Override
     public void onBackPressed() {
-        // If back button pressed, try close drawer if exist and is open. If drawer is already closed continue.
-        if (drawerFragment == null || !drawerFragment.onBackHide()) {
-            // If app should be finished or some fragment transaction still remains on backStack, let the system do the job.
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0 || isAppReadyToFinish)
-                super.onBackPressed();
-            else {
-                // BackStack is empty. For closing the app user have to tap the back button two times in two seconds.
-                MsgUtils.showToast(this, MsgUtils.TOAST_TYPE_MESSAGE, getString(R.string.Another_click_for_leaving_app), MsgUtils.ToastLength.SHORT);
-                isAppReadyToFinish = true;
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        isAppReadyToFinish = false;
-                    }
-                }, 2000);
-            }
-        }
+
     }
 
     @Override
@@ -399,5 +399,8 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
     protected void onPause() {
         super.onPause();
         MyApplication.getInstance().cancelPendingRequests(CONST.MAIN_ACTIVITY_REQUESTS_TAG);
+    }
+
+    public void onBannerSelected(Banner banner) {
     }
 }

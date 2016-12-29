@@ -16,6 +16,9 @@ public class CONST {
     public static final String SPLASH_REQUESTS_TAG = "splash_requests";
     public static final String DRAWER_REQUESTS_TAG = "drawer_requests";
     public static final String BANNER_REQUESTS_TAG = "banner_requests";
+    public static final String BANNER_REQUESTS_POPULAR_TAG = "banner_requests_popular";
+    public static final String BANNER_REQUESTS_FEATURED_TAG = "banner_requests_featured";
+
     public static final String CATEGORY_REQUESTS_TAG = "category_requests";
     public static final String PRODUCT_REQUESTS_TAG = "product_requests";
     public static final String LOGIN_DIALOG_REQUESTS_TAG = "login_dialog_requests";

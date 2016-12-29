@@ -1,13 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:overScrollMode="never">
+
 <RelativeLayout android:id="@+id/banners_root"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/banners_recycler"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/background_grey">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/horizontal_banner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:layout_marginTop="8dp"
+            android:gravity="left"
+            android:text="Featured Products" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/horizontal_recycler_featured"
+            android:background="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:backgroundTint="@color/windowBackground"/>
+
+
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:layout_marginTop="8dp"
+            android:gravity="left"
+            android:text="Popular Products" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/horizontal_recycler_view_popular"
+            android:background="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:backgroundTint="@color/windowBackground"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/banners_empty"
@@ -39,3 +86,4 @@
             android:textStyle="bold"/>
     </LinearLayout>
 </RelativeLayout>
+   </ScrollView>
