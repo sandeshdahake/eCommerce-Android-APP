@@ -96,7 +96,7 @@ public class HorizontalProductListAdapter extends RecyclerView.Adapter<Horizonta
                 .fit().centerInside()
                 .into(holder.thumbnail);
         holder.name.setText(product.getName());
-        holder.price.setText(product.getPrice());
+        holder.price.setText("Rs"+ product.getPrice());
         holder.rating.setRating(product.getRating());
 
     }

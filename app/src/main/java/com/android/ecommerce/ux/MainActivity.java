@@ -57,6 +57,7 @@ import com.android.ecommerce.entities.drawerMenu.DrawerItemPage;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemSubCategory;
 import com.android.ecommerce.utils.MsgUtils;
 import com.android.ecommerce.utils.Utils;
+import com.android.ecommerce.ux.fragments.AccountFragment;
 import com.android.ecommerce.ux.fragments.BannersFragment;
 import com.android.ecommerce.ux.fragments.DrawerFragment;
 import com.android.volley.Request;
@@ -157,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
         // Initialize list for search suggestions
         searchSuggestionsList = new ArrayList<>();
 
-       //  addInitialFragment();
+         addInitialFragment();
 
     }
 
@@ -358,7 +359,8 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
 
     @Override
     public void onAccountSelected() {
-
+        AccountFragment fragment = new AccountFragment();
+        replaceFragment(fragment, AccountFragment.class.getSimpleName());
     }
 
     @Override
@@ -402,5 +404,20 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
     }
 
     public void onBannerSelected(Banner banner) {
+    }
+
+    public void onAccountEditSelected() {
+    }
+
+    public void onOrdersHistory() {
+    }
+
+    public void startSettingsFragment() {
+    }
+
+    public void registerGcmOnServer() {
+    }
+
+    public static void updateCartCountNotification() {
     }
 }

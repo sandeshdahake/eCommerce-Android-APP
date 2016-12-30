@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/content_description_background"
         android:scaleType="centerCrop"
-        android:src="@drawable/login_background"/>
+        android:src="@drawable/comparebanner"/>
 
     <!-- Login welcome form -->
     <LinearLayout
