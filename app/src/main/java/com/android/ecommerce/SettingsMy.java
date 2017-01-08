@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 
 import com.android.ecommerce.entities.Shop;
 import com.android.ecommerce.entities.User;
+import com.android.ecommerce.entities.product.ProductMetadata;
 import com.android.ecommerce.utils.MsgUtils;
 import com.android.ecommerce.utils.Utils;
 import com.android.ecommerce.ux.SplashActivity;
@@ -28,6 +29,7 @@ public class SettingsMy {
     private static final String TAG = SettingsMy.class.getSimpleName();
     private static Shop actualShop;
     private static User activeUser;
+    //private static ProductMetadata productMetadata;
     private static SharedPreferences sharedPref;
 
     private SettingsMy() {}
@@ -206,5 +208,41 @@ public class SettingsMy {
         SharedPreferences.Editor editor = getSettings().edit();
         editor.putBoolean(key, value);
         return editor.commit();
+    }
+
+    /**
+     * Get actually selected sub category.
+     *
+     * @return actual subCategory or null if not selected.
+     */
+    public static ProductMetadata getSubCategory(String id) {
+        String subCategoryID= "subCategoryID"+id;
+
+        SharedPreferences prefs = getSettings();
+            String json = prefs.getString(subCategoryID, "");
+            if (json.isEmpty() || "null".equals(json)) {
+                Timber.e("%s - Returned null shop", TAG);
+                return null;
+            } else {
+                return Utils.getGsonParser().fromJson(json, ProductMetadata.class);
+            }
+        }
+
+
+    /**
+     * Set actually selected productMetadata.
+     *
+     * @param productMetadata selected SubCategory or null for disable selection.
+     */
+    public static void setSubCategory(String id, ProductMetadata productMetadata) {
+        String subCategoryID= "subCategoryID"+id;
+        if (productMetadata != null)
+            Timber.d("%s - save selected subCategory: %s", TAG, productMetadata.toString());
+        else
+            Timber.d("%s - disable selected subCategory", TAG);
+        String json = Utils.getGsonParser().toJson(productMetadata);
+        SharedPreferences.Editor editor = getSettings().edit();
+        editor.putString(subCategoryID, json);
+        editor.apply();
     }
 }

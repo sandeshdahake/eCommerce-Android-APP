@@ -59,6 +59,7 @@ import com.android.ecommerce.utils.MsgUtils;
 import com.android.ecommerce.utils.Utils;
 import com.android.ecommerce.ux.fragments.AccountFragment;
 import com.android.ecommerce.ux.fragments.BannersFragment;
+import com.android.ecommerce.ux.fragments.CategoryFragment;
 import com.android.ecommerce.ux.fragments.DrawerFragment;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -381,8 +382,8 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
     @Override
     public void onDrawerItemSubCategorySelected(DrawerItemSubCategory drawerItemCategory) {
         clearBackStack();
-       // Fragment fragment = CategoryFragment.newInstance(drawerItemCategory);
-       // replaceFragment(fragment, CategoryFragment.class.getSimpleName());
+        Fragment fragment = CategoryFragment.newInstance(drawerItemCategory);
+        replaceFragment(fragment, CategoryFragment.class.getSimpleName());
 
     }
 
@@ -419,5 +420,9 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
     }
 
     public static void updateCartCountNotification() {
+    }
+
+    public void onProductSelected(String id) {
+
     }
 }

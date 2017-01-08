@@ -5,7 +5,7 @@
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
-    <com.android.ecommerce.views.ResizableImageView
+    <com.android.ecommerce.ux.views.ResizableImageView
         android:id="@+id/product_item_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

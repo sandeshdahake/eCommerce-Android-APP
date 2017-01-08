@@ -3,7 +3,6 @@ package com.android.ecommerce.api;
 import com.android.ecommerce.CONST;
 
 public class EndPoints {
-
     /**
      * Base server url.
      */
@@ -12,12 +11,14 @@ public class EndPoints {
     public static final String BANNERS                  = API_URL.concat("/ProductAPI/homepage_slider");
     public static final String BANNERS_FEATURED         = API_URL.concat("/ProductAPI/featured_products");
     public static final String BANNERS_POPULAR          = API_URL.concat("/ProductAPI/popular_products");
+    public static final String PRODUCTS                 = API_URL.concat("/SubcategoryController/products/");
+    public static final String PRODUCT                  = API_URL.concat("/ProductAPI/product?id=");
+
 
     public static final String SHOPS                    = API_URL.concat(CONST.ORGANIZATION_ID + "/shops");
     public static final String SHOPS_SINGLE             = API_URL.concat(CONST.ORGANIZATION_ID + "/shops/%d");
     public static final String PAGES_SINGLE             = API_URL.concat("%d/pages/%d");
     public static final String PAGES_TERMS_AND_COND     = API_URL.concat("%d/pages/terms");
-    public static final String PRODUCTS                 = API_URL.concat("%d/products");
     public static final String PRODUCTS_SINGLE          = API_URL.concat("%d/products/%d");
     public static final String PRODUCTS_SINGLE_RELATED  = API_URL.concat("%d/products/%d?include=related");
     public static final String USER_REGISTER            = API_URL.concat("%d/users/register");
