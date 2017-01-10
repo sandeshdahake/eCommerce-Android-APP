@@ -35,7 +35,7 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
     private List<Product> products = new ArrayList<>();
     private LayoutInflater layoutInflater;
 
-    private boolean loadHighRes = false;
+    private boolean loadHighRes = true;
 
     /**
      * Creates an adapter that handles a list of product items.
@@ -83,19 +83,12 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
         // - replace the contents of the view with that element
         holder.productNameTV.setText(holder.product.getName());
 
-        if (loadHighRes && product.getImage() != null) {
+
             Picasso.with(context).load(product.getImage())
                     .fit().centerInside()
                     .placeholder(R.drawable.placeholder_loading)
-                    .error(R.drawable.placeholder_error)
                     .into(holder.productImage);
-        } else {
-            Picasso.with(context).load(holder.product.getImage())
-                    .fit().centerInside()
-                    .placeholder(R.drawable.placeholder_loading)
-                    .error(R.drawable.placeholder_error)
-                    .into(holder.productImage);
-        }
+
 
         // Determine if product is on sale
             holder.productPriceTV.setVisibility(View.VISIBLE);

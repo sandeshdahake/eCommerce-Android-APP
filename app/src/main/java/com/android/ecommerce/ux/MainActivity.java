@@ -61,6 +61,7 @@ import com.android.ecommerce.ux.fragments.AccountFragment;
 import com.android.ecommerce.ux.fragments.BannersFragment;
 import com.android.ecommerce.ux.fragments.CategoryFragment;
 import com.android.ecommerce.ux.fragments.DrawerFragment;
+import com.android.ecommerce.ux.fragments.ProductFragment;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -423,6 +424,11 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
     }
 
     public void onProductSelected(String id) {
+        Fragment fragment = ProductFragment.newInstance(id);
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            fragment.setReturnTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.fade));
+        }
+        replaceFragment(fragment, ProductFragment.class.getSimpleName());
 
     }
 }

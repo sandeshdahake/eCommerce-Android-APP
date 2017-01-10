@@ -108,6 +108,7 @@ public class CategoryFragment extends Fragment {
     // Properties used to restore previous state
     private int toolbarOffset = -1;
     private boolean isList = false;
+    private String subCategoryID;
 
 
     /**

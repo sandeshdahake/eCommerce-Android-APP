@@ -10,6 +10,8 @@ import com.android.ecommerce.entities.BannerProducts;
 import com.android.ecommerce.entities.BannersResponse;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemCategory;
 import com.android.ecommerce.entities.drawerMenu.DrawerResponse;
+import com.android.ecommerce.entities.product.MetadataItem;
+import com.android.ecommerce.entities.product.ProductMetadata;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -178,6 +180,12 @@ public class GsonRequest<T> extends Request<T> {
                 BannersResponse bannersResponse = new BannersResponse();
                 bannersResponse.setPopularRecords(Arrays.asList(listOfBannerProducts));
                 result =(T)bannersResponse;
+            }else if (CONST.PRODUCT_METADATA_TAG.equals(requestType)){
+                MetadataItem[] listOfMetadataItems = Utils.getGsonParser().fromJson(json, MetadataItem[].class);
+                ProductMetadata productMetadata = new ProductMetadata();
+                productMetadata.setItemList(Arrays.asList(listOfMetadataItems));
+                result =(T)productMetadata;
+
             }
 
             if (result == null) return Response.error(new ParseError(new NullPointerException()));

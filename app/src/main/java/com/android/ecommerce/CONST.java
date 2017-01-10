@@ -21,6 +21,8 @@ public class CONST {
 
     public static final String CATEGORY_REQUESTS_TAG = "category_requests";
     public static final String PRODUCT_REQUESTS_TAG = "product_requests";
+    public static final String PRODUCT_METADATA_TAG = "product_metadata";
+
     public static final String LOGIN_DIALOG_REQUESTS_TAG = "login_dialog_requests";
     public static final String ACCOUNT_REQUESTS_TAG = "account_requests";
     public static final String CART_REQUESTS_TAG = "cart_requests";

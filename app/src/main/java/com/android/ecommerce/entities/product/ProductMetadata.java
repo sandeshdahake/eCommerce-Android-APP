@@ -7,27 +7,14 @@ import com.google.gson.annotations.SerializedName;
 
 public class ProductMetadata {
 
-    @SerializedName("grouplabel")
-    @Expose
-    private String grouplabel;
-    @SerializedName("properties")
-    @Expose
-    private List<Property> properties = null;
-
-    public String getGrouplabel() {
-        return grouplabel;
+    public List<MetadataItem> getItemList() {
+        return itemList;
     }
 
-    public void setGrouplabel(String grouplabel) {
-        this.grouplabel = grouplabel;
+    public void setItemList(List<MetadataItem> itemList) {
+        this.itemList = itemList;
     }
 
-    public List<Property> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(List<Property> properties) {
-        this.properties = properties;
-    }
+    private List<MetadataItem>  itemList;
 
 }
