@@ -82,47 +82,13 @@
                             android:textSize="16sp"
                             tools:text="Test product name"/>
 
-                        <RelativeLayout
-                            android:id="@+id/product_price_layout"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/product_price"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp">
-
-                            <TextView
-                                android:id="@+id/product_price"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toLeftOf="@+id/product_price_discount"
-                                android:layout_toStartOf="@+id/product_price_discount"
-                                android:padding="6dp"
-                                android:textSize="15sp"
-                                tools:text="995 eur"/>
-
-                            <TextView
-                                android:id="@+id/product_price_discount"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:padding="6dp"
-                                android:textColor="@color/colorAccent"
-                                android:textSize="15sp"
-                                android:textStyle="bold"
-                                tools:text="995 eur"/>
-
-                            <TextView
-                                android:id="@+id/product_price_discount_percent"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="6dp"
-                                android:layout_marginStart="6dp"
-                                android:layout_toEndOf="@+id/product_price_discount"
-                                android:layout_toRightOf="@+id/product_price_discount"
-                                android:background="@color/colorAccent"
-                                android:padding="6dp"
-                                android:textColor="@color/textIconColorPrimary"
-                                android:textSize="15sp"
-                                tools:text="-50%"/>
-                        </RelativeLayout>
+                            android:padding="6dp"
+                            android:textSize="15sp"
+                            tools:text="995 eur"/>
                     </LinearLayout>
 
                     <View
@@ -131,89 +97,6 @@
                         android:layout_marginBottom="@dimen/base_margin_vertical"
                         android:layout_marginTop="@dimen/base_margin_vertical_half"
                         android:background="@color/line_light_grey"/>
-
-                    <!-- Product size and color-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingLeft="@dimen/base_margin_horizontal"
-                        android:paddingRight="@dimen/base_margin_horizontal">
-
-                        <Spinner
-                            android:id="@+id/product_color_spinner"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/spinner_background_black_baseline"
-                            android:gravity="start"
-                            android:paddingBottom="8dp"
-                            android:spinnerMode="dialog"/>
-
-                        <Spinner
-                            android:id="@+id/product_size_spinner"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/spinner_background_black_baseline"
-                            android:gravity="start"
-                            android:paddingBottom="8dp"
-                            android:spinnerMode="dialog"/>
-                    </LinearLayout>
-
-                    <!-- Add to cart button with progress bar-->
-                    <RelativeLayout
-                        android:id="@+id/product_add_to_cart_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/base_margin_horizontal"
-                        android:layout_marginRight="@dimen/base_margin_horizontal"
-                        android:layout_marginTop="@dimen/base_margin_vertical"
-                        android:background="@drawable/button_primary_action_ripple"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:minHeight="48dp"
-                        android:paddingEnd="@dimen/base_margin_horizontal"
-                        android:paddingLeft="@dimen/base_margin_horizontal"
-                        android:paddingRight="@dimen/base_margin_horizontal"
-                        android:paddingStart="@dimen/base_margin_horizontal">
-
-                        <TextView
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="3dp"
-                            android:layout_marginStart="3dp"
-                            android:layout_toEndOf="@+id/product_add_to_cart_image"
-                            android:layout_toRightOf="@+id/product_add_to_cart_image"
-                            android:gravity="center"
-                            android:singleLine="true"
-                            android:text="@string/ADD_TO_CART"
-                            android:textColor="@color/textIconColorPrimary"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
-
-                        <ImageView
-                            android:id="@+id/product_add_to_cart_image"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/cart_add"/>
-
-                        <ProgressBar
-                            android:id="@+id/product_add_to_cart_progress"
-                            style="?android:attr/progressBarStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:indeterminate="true"
-                            android:visibility="gone"/>
-                    </RelativeLayout>
 
                     <!-- Product info section-->
                     <View
@@ -235,32 +118,20 @@
                         <!--android:paddingTop="@dimen/base_margin_vertical"-->
                         <!--android:text="@string/PRODUCT_INFO"-->
                         <!--android:textSize="16sp"/>-->
-
-                        <TextView
-                            android:id="@+id/product_info"
+                        <android.support.design.widget.TabLayout
+                            android:id="@+id/tabs"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/base_margin_vertical"
-                            android:fontFamily="sans-serif-light"
-                            android:textSize="14sp"/>
+                            app:tabMode="fixed"
+                            app:tabGravity="fill"/>
 
-                        <Button
-                            android:id="@+id/product_send_to_a_friend"
-                            style="?android:attr/borderlessButtonStyle"
+                        <android.support.v4.view.ViewPager
+                            android:id="@+id/viewpager"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/button_facebook_style"
-                            android:drawableLeft="@drawable/facebook_icon"
-                            android:drawablePadding="3dp"
-                            android:drawableStart="@drawable/facebook_icon"
-                            android:gravity="center"
-                            android:paddingLeft="@dimen/base_margin_horizontal"
-                            android:paddingRight="@dimen/base_margin_horizontal"
-                            android:singleLine="true"
-                            android:text="@string/SEND_TO_A_FRIEND"
-                            android:textColor="@color/textIconColorPrimary"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
+                            android:layout_height="match_parent"
+                            app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
+
+
 
                         <TextView
                             android:layout_width="fill_parent"

@@ -8,8 +8,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentController;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -86,6 +92,7 @@ public class ProductFragment extends Fragment {
     private View layoutEmpty;
     private RelativeLayout productContainer;
     private ScrollView contentScrollLayout;
+    ArrayList<String> productImagesUrls;
 
     // Fields referencing product related views.
     private TextView productNameTv;
@@ -102,9 +109,7 @@ public class ProductFragment extends Fragment {
     /**
      * Spinner offering all available product colors.
      */
-    private Spinner colorSpinner;
-
-    private ArrayList<String> productImagesUrls;
+    private ViewPager viewPager;
     private RecyclerView productImagesRecycler;
     private ViewTreeObserver.OnScrollChangedListener scrollViewListener;
     private ProductImagesRecyclerAdapter productImagesAdapter;
@@ -125,6 +130,7 @@ public class ProductFragment extends Fragment {
      * Id of the wishlist item representing product.
      */
     private long wishlistId = CONST.DEFAULT_EMPTY_ID;
+    private TabLayout tabLayout;
 
     /**
      * Create a new fragment instance for product detail.
@@ -155,15 +161,15 @@ public class ProductFragment extends Fragment {
 
 
         productNameTv = (TextView) view.findViewById(R.id.product_name);
-/*        productPriceDiscountPercentTv = (TextView) view.findViewById(R.id.product_price_discount_percent);
-        productPriceDiscountTv = (TextView) view.findViewById(R.id.product_price_discount);
         productPriceTv = (TextView) view.findViewById(R.id.product_price);
-        productInfoTv = (TextView) view.findViewById(R.id.product_info);
 
-        colorSpinner = (Spinner) view.findViewById(R.id.product_color_spinner);
-*/
+        viewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
-       // prepareButtons(view);
+
+        // prepareButtons(view);
         prepareProductImagesLayout(view);
         prepareScrollViewAndWishlist(view);
 
@@ -178,13 +184,18 @@ public class ProductFragment extends Fragment {
      * @param view fragment base view.
      */
     private void prepareButtons(View view) {
-        addToCartImage = (ImageView) view.findViewById(R.id.product_add_to_cart_image);
-        addToCartProgress = (ProgressBar) view.findViewById(R.id.product_add_to_cart_progress);
-        addToCartProgress.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(getActivity(), R.color.textIconColorPrimary), PorterDuff.Mode.MULTIPLY);
-        View addToCart = view.findViewById(R.id.product_add_to_cart_layout);
 
 
     }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        adapter.addFragment(new ProductDetailAffiliate(), "Compare Prices");
+        adapter.addFragment(new ProductDetailSpecs(), "SPECS");
+        adapter.addFragment(new ProductDetailReview(), "Reviews");
+        viewPager.setAdapter(adapter);
+    }
+
 
     /**
      * Prepare product images and related products views, adapters and listeners.
@@ -362,11 +373,12 @@ public class ProductFragment extends Fragment {
             JsonArray images = properties.getAsJsonArray("images");
             Type listType = new TypeToken<List<ImageUrlFromApi>>() {}.getType();
             List<ImageUrlFromApi> list = new Gson().fromJson(images.getAsJsonArray(), listType);
-
+            productImagesUrls = new ArrayList<String>();
             if (productImagesAdapter != null) {
                 productImagesAdapter.clearAll();
                 for (ImageUrlFromApi element : list){
                     productImagesAdapter.addLast(element.getUrl());
+                    productImagesUrls.add(element.getUrl());
                 }
             }
         } else {
@@ -423,4 +435,34 @@ public class ProductFragment extends Fragment {
         MyApplication.getInstance().cancelPendingRequests(CONST.PRODUCT_METADATA_TAG);
         super.onStop();
     }
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+    }
+
+
 }
