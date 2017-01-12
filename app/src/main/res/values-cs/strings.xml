@@ -194,4 +194,5 @@
     <string name="content_description_intro_screen">Úvodní obrazovka</string>
     <string name="content_description_product_image">Obrázek produktu</string>
     <string name="content_description_shipping_info">Informace o dopravě</string>
+    <string name="store_text">Buy Now</string>
 </resources>

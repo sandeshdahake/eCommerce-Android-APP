@@ -44,6 +44,7 @@ import com.android.ecommerce.entities.Metadata;
 import com.android.ecommerce.entities.User;
 import com.android.ecommerce.entities.product.ImageUrlFromApi;
 import com.android.ecommerce.entities.product.ProductMetadata;
+import com.android.ecommerce.entities.product.WebStoreProductDetail;
 import com.android.ecommerce.entities.productList.Product;
 import com.android.ecommerce.interfaces.ProductImagesRecyclerInterface;
 import com.android.ecommerce.listeners.OnSingleClickListener;
@@ -164,9 +165,7 @@ public class ProductFragment extends Fragment {
         productPriceTv = (TextView) view.findViewById(R.id.product_price);
 
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
 
 
         // prepareButtons(view);
@@ -187,15 +186,6 @@ public class ProductFragment extends Fragment {
 
 
     }
-
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new ProductDetailAffiliate(), "Compare Prices");
-        adapter.addFragment(new ProductDetailSpecs(), "SPECS");
-        adapter.addFragment(new ProductDetailReview(), "Reviews");
-        viewPager.setAdapter(adapter);
-    }
-
 
     /**
      * Prepare product images and related products views, adapters and listeners.
@@ -371,8 +361,8 @@ public class ProductFragment extends Fragment {
             productNameTv.setText(properties.get("Name").toString());
 
             JsonArray images = properties.getAsJsonArray("images");
-            Type listType = new TypeToken<List<ImageUrlFromApi>>() {}.getType();
-            List<ImageUrlFromApi> list = new Gson().fromJson(images.getAsJsonArray(), listType);
+            Type listImageType = new TypeToken<List<ImageUrlFromApi>>() {}.getType();
+            List<ImageUrlFromApi> list = new Gson().fromJson(images.getAsJsonArray(), listImageType);
             productImagesUrls = new ArrayList<String>();
             if (productImagesAdapter != null) {
                 productImagesAdapter.clearAll();
@@ -381,11 +371,26 @@ public class ProductFragment extends Fragment {
                     productImagesUrls.add(element.getUrl());
                 }
             }
+            Type listWebStoreType = new TypeToken<List<WebStoreProductDetail>>() {}.getType();
+            List<WebStoreProductDetail> listOfWebStore =  new Gson().fromJson(productData.get("webStoreProductDetails").getAsJsonArray(), listWebStoreType);
+
+            setupViewPager(listOfWebStore, properties, metadata);
+
         } else {
             MsgUtils.showToast(getActivity(), MsgUtils.TOAST_TYPE_INTERNAL_ERROR, getString(R.string.Internal_error), MsgUtils.ToastLength.LONG);
             Timber.e(new RuntimeException(), "Refresh product screen with null product");
         }
     }
+
+    private void setupViewPager(List<WebStoreProductDetail> listOfWebStore, JsonObject properties, ProductMetadata metadata ) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        adapter.addFragment(ProductDetailAffiliate.newInstance(listOfWebStore), "Compare Prices");
+        adapter.addFragment(new ProductDetailSpecs(), "SPECS");
+        adapter.addFragment(new ProductDetailReview(), "Reviews");
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
 
 
     /**

@@ -44,6 +44,7 @@ import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.android.ecommerce.BuildConfig;
@@ -62,6 +63,7 @@ import com.android.ecommerce.ux.fragments.BannersFragment;
 import com.android.ecommerce.ux.fragments.CategoryFragment;
 import com.android.ecommerce.ux.fragments.DrawerFragment;
 import com.android.ecommerce.ux.fragments.ProductFragment;
+import com.android.ecommerce.ux.fragments.WebViewFragment;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -431,4 +433,13 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
         replaceFragment(fragment, ProductFragment.class.getSimpleName());
 
     }
+
+    public void onShopSelected(String url) {
+        Fragment fragment = WebViewFragment.newInstance(url);
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            fragment.setReturnTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.fade));
+        }
+        replaceFragment(fragment, WebViewFragment.class.getSimpleName());
+    }
+
 }

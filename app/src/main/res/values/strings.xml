@@ -197,4 +197,5 @@
     <string name="content_description_intro_screen">Intro screen</string>
     <string name="content_description_product_image">Product image</string>
     <string name="content_description_shipping_info">Shipping info</string>
+    <string name="store_text">Buy Now</string>
 </resources>
