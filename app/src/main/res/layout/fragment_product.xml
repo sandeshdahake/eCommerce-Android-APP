@@ -91,12 +91,14 @@
                             tools:text="995 eur"/>
                     </LinearLayout>
 
+<!--
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_marginBottom="@dimen/base_margin_vertical"
                         android:layout_marginTop="@dimen/base_margin_vertical_half"
                         android:background="@color/line_light_grey"/>
+-->
 
                     <!-- Product info section-->
                     <View
@@ -104,13 +106,6 @@
                         android:layout_height="1px"
                         android:layout_marginTop="@dimen/base_margin_vertical"
                         android:background="@color/line_light_grey"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/base_margin_horizontal">
-
                         <!--<TextView-->
                         <!--android:layout_width="match_parent"-->
                         <!--android:layout_height="wrap_content"-->
@@ -129,8 +124,7 @@
                             android:id="@+id/viewpager"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
-
+                              />
 
 
                         <TextView
@@ -140,13 +134,11 @@
                             android:text="@string/RECOMMENDED"
                             android:textSize="16sp"
                             android:textStyle="bold"/>
-                    </LinearLayout>
 
-                    <!-- Recycler height set in code -->
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/product_recommended_images_recycler"
-                        android:layout_width="match_parent"
-                        android:layout_height="220dp"/>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/product_recommended_images_recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="220dp"/>
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

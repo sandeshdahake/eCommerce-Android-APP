@@ -81,7 +81,7 @@ public class WebStoreRecyclerAdapter extends RecyclerView.Adapter<WebStoreRecycl
         holder.storePriceTV.setText(Integer.toString(holder.shop.getPrice().getAmount()));
 
 
-            Picasso.with(context).load(shop.getProductUrl().get0())
+            Picasso.with(context).load(shop.getProductUrl())
                     .fit().centerInside()
                     .placeholder(R.drawable.placeholder_loading)
                     .into(holder.storeImage);
@@ -133,7 +133,7 @@ public class WebStoreRecyclerAdapter extends RecyclerView.Adapter<WebStoreRecycl
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    recyclerInterface.onWebStoreSelected(v, shop.getProductUrl().get0());
+                    recyclerInterface.onWebStoreSelected(v, shop.getProductUrl());
                 }
             });
         }

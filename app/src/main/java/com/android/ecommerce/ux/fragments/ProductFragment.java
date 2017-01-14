@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentController;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -165,9 +166,15 @@ public class ProductFragment extends Fragment {
         productPriceTv = (TextView) view.findViewById(R.id.product_price);
 
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
-
-
+        tabLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                tabLayout.setupWithViewPager(viewPager);
+            }
+        });
         // prepareButtons(view);
         prepareProductImagesLayout(view);
         prepareScrollViewAndWishlist(view);
@@ -374,7 +381,7 @@ public class ProductFragment extends Fragment {
             Type listWebStoreType = new TypeToken<List<WebStoreProductDetail>>() {}.getType();
             List<WebStoreProductDetail> listOfWebStore =  new Gson().fromJson(productData.get("webStoreProductDetails").getAsJsonArray(), listWebStoreType);
 
-            setupViewPager(listOfWebStore, properties, metadata);
+          //  setupViewPager(listOfWebStore, properties, metadata);
 
         } else {
             MsgUtils.showToast(getActivity(), MsgUtils.TOAST_TYPE_INTERNAL_ERROR, getString(R.string.Internal_error), MsgUtils.ToastLength.LONG);
@@ -382,13 +389,12 @@ public class ProductFragment extends Fragment {
         }
     }
 
-    private void setupViewPager(List<WebStoreProductDetail> listOfWebStore, JsonObject properties, ProductMetadata metadata ) {
+    private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(ProductDetailAffiliate.newInstance(listOfWebStore), "Compare Prices");
+       // adapter.addFragment(ProductDetailAffiliate.newInstance(), "Compare Prices");
         adapter.addFragment(new ProductDetailSpecs(), "SPECS");
         adapter.addFragment(new ProductDetailReview(), "Reviews");
         viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
     }
 
 
@@ -440,7 +446,8 @@ public class ProductFragment extends Fragment {
         MyApplication.getInstance().cancelPendingRequests(CONST.PRODUCT_METADATA_TAG);
         super.onStop();
     }
-    class ViewPagerAdapter extends FragmentPagerAdapter {
+
+    class ViewPagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
@@ -468,6 +475,5 @@ public class ProductFragment extends Fragment {
             return mFragmentTitleList.get(position);
         }
     }
-
 
 }

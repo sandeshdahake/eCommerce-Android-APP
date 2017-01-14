@@ -28,6 +28,7 @@ import com.android.ecommerce.R;
 import com.android.ecommerce.api.EndPoints;
 import com.android.ecommerce.api.GsonRequest;
 import com.android.ecommerce.entities.BannerProducts;
+import com.android.ecommerce.entities.SearchResult;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemCategory;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemPage;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemSubCategory;
@@ -294,7 +295,7 @@ public class DrawerFragment extends Fragment {
                 drawerRecyclerAdapter.notifyDataSetChanged();
 
                 if (drawerListener != null)
-                    drawerListener.prepareSearchSuggestions(drawerResponse.getNavigation());
+                   // drawerListener.prepareSearchSuggestions(drawerResponse.getNavigation());
 
                 drawerLoading = false;
                 if (drawerRecycler != null) drawerRecycler.setVisibility(View.VISIBLE);
@@ -426,6 +427,6 @@ public class DrawerFragment extends Fragment {
          *
          * @param navigation items for suggestions generating.
          */
-        void prepareSearchSuggestions(List<DrawerItemCategory> navigation);
+        void prepareSearchSuggestions(List<SearchResult> navigation);
     }
 }

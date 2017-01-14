@@ -16,6 +16,7 @@ public class EndPoints {
     public static final String PRODUCT                  = API_URL.concat("/ProductAPI/product?id=");
     public static final String PRODUCTS_METADATA        = API_URL.concat("/ProductAPI/subcategory_metadata?id=");
     public static final String PRODUCTS_SINGLE_RELATED  = API_URL.concat("/ProductAPI/similar_products?id=");
+    public static final String SEARCH                   = API_URL.concat("/ProductAPI/search?key=");
 
 
     public static final String PAGES_SINGLE             = API_URL.concat("%d/pages/%d");

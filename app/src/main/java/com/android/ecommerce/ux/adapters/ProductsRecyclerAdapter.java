@@ -83,11 +83,19 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
         // - replace the contents of the view with that element
         holder.productNameTV.setText(holder.product.getName());
 
-
+           // String url = "http:\\/\\/comparedunia.net.in\\/assets\\/images\\/products\\" + product.getImage();
+        String url = "http://comparedunia.net.in//assets//images//products/printer/full/305a3ef18dfef6c39b38745a22687d868f08a0d7.jpg";
+/*
             Picasso.with(context).load(product.getImage())
                     .fit().centerInside()
                     .placeholder(R.drawable.placeholder_loading)
                     .into(holder.productImage);
+*/
+
+        Picasso.with(context).load(url)
+                .fit().centerInside()
+                .placeholder(R.drawable.placeholder_loading)
+                .into(holder.productImage);
 
 
         // Determine if product is on sale

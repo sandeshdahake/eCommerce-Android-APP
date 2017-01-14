@@ -55,6 +55,11 @@ public class ProductDetailAffiliate extends Fragment {
         return fragment;
     }
 
+    public static ProductDetailAffiliate newInstance() {
+        ProductDetailAffiliate fragment = new ProductDetailAffiliate();
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,8 +107,13 @@ public class ProductDetailAffiliate extends Fragment {
 
     private void checkEmptyContent() {
         if (adapter != null && adapter.getItemCount() > 0) {
+/*
             emptyContentView.setVisibility(View.INVISIBLE);
             storeRecycle.setVisibility(View.VISIBLE);
+*/
+            emptyContentView.setVisibility(View.VISIBLE);
+            storeRecycle.setVisibility(View.INVISIBLE);
+
         } else {
             emptyContentView.setVisibility(View.VISIBLE);
             storeRecycle.setVisibility(View.INVISIBLE);

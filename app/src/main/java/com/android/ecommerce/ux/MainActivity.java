@@ -51,11 +51,18 @@ import com.android.ecommerce.BuildConfig;
 import com.android.ecommerce.CONST;
 import com.android.ecommerce.MyApplication;
 import com.android.ecommerce.R;
+import com.android.ecommerce.SettingsMy;
+import com.android.ecommerce.api.EndPoints;
+import com.android.ecommerce.api.GsonRequest;
 import com.android.ecommerce.entities.Banner;
 import com.android.ecommerce.entities.BannerProducts;
+import com.android.ecommerce.entities.SearchResult;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemCategory;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemPage;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemSubCategory;
+import com.android.ecommerce.entities.drawerMenu.DrawerResponse;
+import com.android.ecommerce.entities.product.ProductMetadata;
+import com.android.ecommerce.entities.product.WebStoreProductDetail;
 import com.android.ecommerce.utils.MsgUtils;
 import com.android.ecommerce.utils.Utils;
 import com.android.ecommerce.ux.fragments.AccountFragment;
@@ -68,9 +75,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -185,11 +196,6 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
         return super.onCreateOptionsMenu(menu);
     }
 
-    /**
-     * Prepare toolbar search view. Invoke search suggestions and handle search queries.
-     *
-     * @param searchItem corresponding menu item.
-     */
     private void prepareSearchView(@NonNull final MenuItem searchItem) {
         final SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setSubmitButtonEnabled(true);
@@ -204,33 +210,67 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
 
             public boolean onQueryTextSubmit(String query) {
                 // Submit search query and hide search action view.
-              //  onSearchSubmitted(query);
+                onSearchSubmitted(query);
                 searchView.setQuery("", false);
                 searchView.setIconified(true);
                 searchItem.collapseActionView();
                 return true;
             }
         };
+        searchView.setOnQueryTextListener(queryTextListener);
 
-        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
-            @Override
-            public boolean onSuggestionSelect(int position) {
-                return false;
+    }
+    @Override
+    public void prepareSearchSuggestions(List<SearchResult> arrayList) {
+        final String[] from = new String[]{"categories"};
+        final int[] to = new int[]{android.R.id.text1};
+
+        searchSuggestionsAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1,
+                null, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        if (arrayList != null && !arrayList.isEmpty()) {
+            for (int i = 0; i < arrayList.size(); i++) {
+                if (!searchSuggestionsList.contains(arrayList.get(i).getName())) {
+                    searchSuggestionsList.add(arrayList.get(i).getName());
+                }
             }
+            searchSuggestionsAdapter.notifyDataSetChanged();
+        } else {
+            Timber.e("Search suggestions loading failed.");
+            searchSuggestionsAdapter = null;
+        }
+    }
 
+
+    private void onSearchSubmitted(String searchQuery) {
+        if(searchQuery == null || "".equals(searchQuery.trim())){
+            return;
+        }
+
+       // clearBackStack();
+        String url = EndPoints.SEARCH + searchQuery;
+
+        GsonRequest<JsonObject> searchResult = new GsonRequest<>(Request.Method.GET, url, null, JsonObject.class,
+                new Response.Listener<JsonObject>() {
+                    @Override
+                    public void onResponse(@NonNull JsonObject response) {
+                        Type listType = new TypeToken<List<SearchResult>>() {}.getType();
+                        List<SearchResult> list =  new Gson().fromJson(response.getAsJsonArray(), listType);
+
+                        prepareSearchSuggestions(list);
+
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            public boolean onSuggestionClick(int position) {
-                // Submit search suggestion query and hide search action view.
-                MatrixCursor c = (MatrixCursor) searchSuggestionsAdapter.getItem(position);
-                //onSearchSubmitted(c.getString(1));
-                searchView.setQuery("", false);
-                searchView.setIconified(true);
-                searchItem.collapseActionView();
-                return true;
+            public void onErrorResponse(VolleyError error) {
             }
         });
-        searchView.setOnQueryTextListener(queryTextListener);
+
+        MyApplication.getInstance().addToRequestQueue(searchResult, CONST.SEARCH_TAG);
+
+        Timber.d("Called onSearchSubmitted with text: %s", searchQuery);
     }
+
+
 
     /**
      * Show user search whisperer with generated suggestions.
@@ -253,33 +293,6 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
         }
     }
 
-    @Override
-    public void prepareSearchSuggestions(List<DrawerItemCategory> navigation) {
-        final String[] from = new String[]{"categories"};
-        final int[] to = new int[]{android.R.id.text1};
-
-        searchSuggestionsAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1,
-                null, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-        if (navigation != null && !navigation.isEmpty()) {
-            for (int i = 0; i < navigation.size(); i++) {
-                if (!searchSuggestionsList.contains(navigation.get(i).getName())) {
-                    searchSuggestionsList.add(navigation.get(i).getName());
-                }
-
-                if (navigation.get(i).hasChildren()) {
-                    for (int j = 0; j < navigation.get(i).getSubcategories().size(); j++) {
-                        if (!searchSuggestionsList.contains(navigation.get(i).getSubcategories().get(j).getName())) {
-                            searchSuggestionsList.add(navigation.get(i).getSubcategories().get(j).getName());
-                        }
-                    }
-                }
-            }
-            searchSuggestionsAdapter.notifyDataSetChanged();
-        } else {
-            Timber.e("Search suggestions loading failed.");
-            searchSuggestionsAdapter = null;
-        }
-    }
 
 
     @Override

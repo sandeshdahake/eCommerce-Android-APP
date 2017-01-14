@@ -51,7 +51,7 @@ public class DrawerSubmenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
 
         DrawerItemSubCategory drawerItemCategory = getDrawerItem(position);
         viewHolderItemCategory.bindContent(drawerItemCategory);
-        viewHolderItemCategory.itemText.setText(drawerItemCategory.getName());
+        viewHolderItemCategory.itemText.setText(drawerItemCategory.getLabel());
         viewHolderItemCategory.subMenuIndicator.setVisibility(View.INVISIBLE);
     }
 

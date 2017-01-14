@@ -8,6 +8,7 @@ import android.util.Base64;
 import com.android.ecommerce.entities.Banner;
 import com.android.ecommerce.entities.BannerProducts;
 import com.android.ecommerce.entities.BannersResponse;
+import com.android.ecommerce.entities.SearchResult;
 import com.android.ecommerce.entities.drawerMenu.DrawerItemCategory;
 import com.android.ecommerce.entities.drawerMenu.DrawerResponse;
 import com.android.ecommerce.entities.product.MetadataItem;
@@ -20,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.UnsupportedEncodingException;
@@ -116,6 +118,7 @@ public class GsonRequest<T> extends Request<T> {
                        Response.ErrorListener errorListener) {
         this(method, requestUrl, requestBody, clazz, successListener, errorListener, null, null,null);
     }
+
 
 
     @Override

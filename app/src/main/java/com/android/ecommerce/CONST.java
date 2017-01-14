@@ -18,6 +18,7 @@ public class CONST {
     public static final String BANNER_REQUESTS_TAG = "banner_requests";
     public static final String BANNER_REQUESTS_POPULAR_TAG = "banner_requests_popular";
     public static final String BANNER_REQUESTS_FEATURED_TAG = "banner_requests_featured";
+    public static final String SEARCH_TAG = "search_tag";
 
     public static final String CATEGORY_REQUESTS_TAG = "category_requests";
     public static final String PRODUCT_REQUESTS_TAG = "product_requests";
