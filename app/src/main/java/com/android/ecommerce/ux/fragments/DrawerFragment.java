@@ -295,7 +295,7 @@ public class DrawerFragment extends Fragment {
                 drawerRecyclerAdapter.notifyDataSetChanged();
 
                 if (drawerListener != null)
-                   // drawerListener.prepareSearchSuggestions(drawerResponse.getNavigation());
+                    drawerListener.prepareSearchSuggestions(drawerResponse.getNavigation());
 
                 drawerLoading = false;
                 if (drawerRecycler != null) drawerRecycler.setVisibility(View.VISIBLE);
@@ -388,6 +388,8 @@ public class DrawerFragment extends Fragment {
      */
     public interface FragmentDrawerListener {
 
+        void prepareSearchSuggestions(List<DrawerItemCategory> navigation);
+
         /**
          * Launch {@link BannersFragment}. If fragment is already launched nothing happen.
          */
@@ -427,6 +429,5 @@ public class DrawerFragment extends Fragment {
          *
          * @param navigation items for suggestions generating.
          */
-        void prepareSearchSuggestions(List<SearchResult> navigation);
     }
 }

@@ -19,6 +19,7 @@ public class EndPoints {
     public static final String SEARCH                   = API_URL.concat("/ProductAPI/search?key=");
 
 
+
     public static final String PAGES_SINGLE             = API_URL.concat("%d/pages/%d");
     public static final String PAGES_TERMS_AND_COND     = API_URL.concat("%d/pages/terms");
     public static final String USER_REGISTER            = API_URL.concat("%d/users/register");

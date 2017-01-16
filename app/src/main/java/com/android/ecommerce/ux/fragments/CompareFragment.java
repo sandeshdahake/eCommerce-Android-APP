@@ -133,6 +133,7 @@ public class CompareFragment extends Fragment {
         List<MetadataItem> listData = metadata.getItemList();
         for(MetadataItem item : listData){
             List<Property> productSpec =  item.getProperties();
+/*
             TableRow tableRowGroup = new TableRow(getContext());
             TextView tableRowGroupText = new TextView(getContext());
             tableRowGroupText.setBackgroundColor(Color.rgb(211,211,211));
@@ -149,19 +150,31 @@ public class CompareFragment extends Fragment {
             tableRowGroup.addView(tableRowGroupText);
             tableRowGroup.addView(blanktxt);
             table.addView(tableRowGroup);
+*/
             // table.addView(view);
             for(Property specLabel:productSpec){
 
                 TableRow tableRowLabel = new TableRow(getContext());
                 TextView tableRowLabelText = new TextView(getContext());
-                tableRowLabelText.setBackgroundColor(Color.GREEN);
+                tableRowLabelText.setBackgroundColor(Color.rgb(211,211,211));
                 tableRowLabelText.setLayoutParams(params);
                 tableRowLabelText.setText(specLabel.getLabel());
                 tableRowLabelText.setPadding(20, 20, 20, 20);
                 tableRowLabel.addView(tableRowLabelText);
-                table.addView(tableRowLabel);
+                TextView blanktxt = new TextView(getContext());
+                blanktxt.setBackgroundColor(Color.rgb(211,211,211));
+                blanktxt.setLayoutParams(params);
+                blanktxt.setPadding(20, 20, 20, 20);
+                tableRowLabel.addView(blanktxt);
+
+
+                TableRow tableRowProduct1 = new TableRow(getContext());
+                TableRow tableRowProduct2= new TableRow(getContext());
+                TableRow tableRowProduct3= new TableRow(getContext());
+                TableRow tableRowProduct4= new TableRow(getContext());
+                Boolean isNotNull = false;
+
                 if(obj1 != null){
-                    TableRow tableRowProduct1 = new TableRow(getContext());
                     TextView tableRowProductNameText1 = new TextView(getContext());
                     tableRowProductNameText1.setBackgroundColor(Color.WHITE);
                     tableRowProductNameText1.setLayoutParams(params);
@@ -175,11 +188,11 @@ public class CompareFragment extends Fragment {
                     tableRowProductValue1.setText(obj1.get(specLabel.getName())== null?"":obj1.get(specLabel.getName()).toString());
                     tableRowProductValue1.setPadding(20, 20, 20, 20);
                     tableRowProduct1.addView(tableRowProductValue1);
-
-                    table.addView(tableRowProduct1);
+                    if(obj1.get(specLabel.getName())!= null){
+                        isNotNull = true;
+                    }
                 }
                 if(obj2 != null){
-                    TableRow tableRowProduct2 = new TableRow(getContext());
                     TextView tableRowProductNameText2 = new TextView(getContext());
                     tableRowProductNameText2.setBackgroundColor(Color.WHITE);
                     tableRowProductNameText2.setLayoutParams(params);
@@ -193,11 +206,12 @@ public class CompareFragment extends Fragment {
                     tableRowProductValue2.setText(obj2.get(specLabel.getName())== null?"":obj2.get(specLabel.getName()).toString());
                     tableRowProductValue2.setPadding(20, 20, 20, 20);
                     tableRowProduct2.addView(tableRowProductValue2);
+                    if(obj2.get(specLabel.getName())!= null){
+                        isNotNull = true;
+                    }
 
-                    table.addView(tableRowProduct2);
                 }
                 if(obj3 != null){
-                    TableRow tableRowProduct3 = new TableRow(getContext());
                     TextView tableRowProductNameText3 = new TextView(getContext());
                     tableRowProductNameText3.setBackgroundColor(Color.WHITE);
                     tableRowProductNameText3.setLayoutParams(params);
@@ -211,11 +225,12 @@ public class CompareFragment extends Fragment {
                     tableRowProductValue3.setText(obj3.get(specLabel.getName())== null?"":obj3.get(specLabel.getName()).toString());
                     tableRowProductValue3.setPadding(20, 20, 20, 20);
                     tableRowProduct3.addView(tableRowProductValue3);
+                    if(obj3.get(specLabel.getName())!= null){
+                        isNotNull = true;
+                    }
 
-                    table.addView(tableRowProduct3);
                 }
                 if(obj4 != null){
-                    TableRow tableRowProduct4 = new TableRow(getContext());
                     TextView tableRowProductNameText4 = new TextView(getContext());
                     tableRowProductNameText4.setBackgroundColor(Color.WHITE);
                     tableRowProductNameText4.setLayoutParams(params);
@@ -229,8 +244,19 @@ public class CompareFragment extends Fragment {
                     tableRowProductValue4.setText(obj4.get(specLabel.getName())== null?"":obj4.get(specLabel.getName()).toString());
                     tableRowProductValue4.setPadding(20, 20, 20, 20);
                     tableRowProduct4.addView(tableRowProductValue4);
+                    if(obj4.get(specLabel.getName())!= null){
+                        isNotNull = true;
+                    }
 
+                }
+
+                if(isNotNull){
+                    table.addView(tableRowLabel);
+                    table.addView(tableRowProduct1);
+                    table.addView(tableRowProduct2);
+                    table.addView(tableRowProduct3);
                     table.addView(tableRowProduct4);
+
                 }
             }
         }

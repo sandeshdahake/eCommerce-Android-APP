@@ -1,5 +1,6 @@
 package com.android.ecommerce.ux.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -18,6 +19,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -43,12 +45,16 @@ import com.android.ecommerce.R;
 import com.android.ecommerce.SettingsMy;
 import com.android.ecommerce.api.EndPoints;
 import com.android.ecommerce.api.GsonRequest;
+import com.android.ecommerce.entities.Banner;
+import com.android.ecommerce.entities.BannerProducts;
+import com.android.ecommerce.entities.BannersResponse;
 import com.android.ecommerce.entities.Metadata;
 import com.android.ecommerce.entities.User;
 import com.android.ecommerce.entities.product.ImageUrlFromApi;
 import com.android.ecommerce.entities.product.ProductMetadata;
 import com.android.ecommerce.entities.product.WebStoreProductDetail;
 import com.android.ecommerce.entities.productList.Product;
+import com.android.ecommerce.interfaces.BannersRecyclerInterface;
 import com.android.ecommerce.interfaces.ProductImagesRecyclerInterface;
 import com.android.ecommerce.listeners.OnSingleClickListener;
 import com.android.ecommerce.utils.JsonUtils;
@@ -56,6 +62,7 @@ import com.android.ecommerce.utils.MsgUtils;
 import com.android.ecommerce.utils.RecyclerMarginDecorator;
 import com.android.ecommerce.utils.Utils;
 import com.android.ecommerce.ux.MainActivity;
+import com.android.ecommerce.ux.adapters.HorizontalProductListAdapter;
 import com.android.ecommerce.ux.adapters.ProductImagesRecyclerAdapter;
 import com.android.ecommerce.ux.dialogs.ProductImagesDialogFragment;
 import com.android.volley.Request;
@@ -69,6 +76,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -121,6 +129,9 @@ public class ProductFragment extends Fragment {
     // Indicates running add product to cart request.
     private ImageView addToCartImage;
     private ProgressBar addToCartProgress;
+
+    private RecyclerView horizontal_recycler_view_featured;
+    private HorizontalProductListAdapter horizontalAdapterFeatured;
 
     /**
      * Floating button allowing add/remove product from wishlist.
@@ -266,22 +277,26 @@ public class ProductFragment extends Fragment {
             params.height = (int) (dm.heightPixels * 0.48);
         }
 
-/*
-        // Prepare related products
-        RecyclerView relatedProductsRecycler = (RecyclerView) view.findViewById(R.id.product_recommended_images_recycler);
-        relatedProductsRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        relatedProductsRecycler.addItemDecoration(new RecyclerMarginDecorator(getContext(), RecyclerMarginDecorator.ORIENTATION.HORIZONTAL));
-        relatedProductsAdapter = new RelatedProductsRecyclerAdapter(getActivity(), new RelatedProductsRecyclerInterface() {
+        horizontalAdapterFeatured = new HorizontalProductListAdapter(getActivity(), new BannersRecyclerInterface() {
             @Override
-            public void onRelatedProductSelected(View v, int position, Product product) {
-                if (product != null && getActivity() instanceof MainActivity) {
-                    ((MainActivity) getActivity()).onProductSelected(product.getId());
-                }
+            public void onBannerSelected(Banner banner) {
+
             }
 
+            @Override
+            public void onBannerProductSelected(BannerProducts product) {
+            }
         });
-        relatedProductsRecycler.setAdapter(relatedProductsAdapter);
-*/
+
+
+        horizontal_recycler_view_featured = (RecyclerView) view.findViewById(R.id.horizontal_recycler_featured);
+        LinearLayoutManager layoutManagerFeatured = new LinearLayoutManager(horizontal_recycler_view_featured.getContext(),LinearLayoutManager.HORIZONTAL, false);
+        horizontal_recycler_view_featured.setLayoutManager(layoutManagerFeatured);
+        horizontal_recycler_view_featured.setItemAnimator(new DefaultItemAnimator());
+        horizontal_recycler_view_featured.setHasFixedSize(true);
+        horizontal_recycler_view_featured.addItemDecoration(new VerticalDividerItemDecoration.Builder(this.getContext()).build());
+        horizontal_recycler_view_featured.setAdapter(horizontalAdapterFeatured);
+
     }
 
     /**
@@ -363,6 +378,32 @@ public class ProductFragment extends Fragment {
         getProductRequest.setRetryPolicy(MyApplication.getDefaultRetryPolice());
         getProductRequest.setShouldCache(false);
         MyApplication.getInstance().addToRequestQueue(getProductRequest, CONST.PRODUCT_REQUESTS_TAG);
+        String urlSimilar = String.format(EndPoints.PRODUCTS_SINGLE_RELATED);
+        urlSimilar = urlSimilar + productId;
+        GsonRequest<BannersResponse> getSimilarProductRequest = new GsonRequest<>(Request.Method.GET, urlSimilar, null, BannersResponse.class,
+                new Response.Listener<BannersResponse>() {
+                    @Override
+                    public void onResponse(@NonNull BannersResponse response) {
+                        Timber.d("response for loadFeatured: %s", response.toString());
+                        horizontalAdapterFeatured.addBannerProducts(response.getFeaturedRecords());
+
+                        if (horizontalAdapterFeatured.getItemCount() > 0) {
+                            horizontal_recycler_view_featured.setVisibility(View.VISIBLE);
+                        } else {
+                            horizontal_recycler_view_featured.setVisibility(View.INVISIBLE);
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                MsgUtils.logAndShowErrorMessage(getActivity(), error);
+            }
+        },null,null,CONST.BANNER_REQUESTS_FEATURED_TAG);
+        getSimilarProductRequest.setRetryPolicy(MyApplication.getDefaultRetryPolice());
+        getSimilarProductRequest.setShouldCache(false);
+        MyApplication.getInstance().addToRequestQueue(getSimilarProductRequest, CONST.PRODUCT_SIMILAR);
+
     }
 
     private void PopulateProductUsingMetadata(final JsonObject productData, final String subCatID, ProductMetadata metadata) {

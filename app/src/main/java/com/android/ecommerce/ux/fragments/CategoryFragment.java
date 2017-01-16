@@ -199,7 +199,7 @@ public class CategoryFragment extends Fragment {
                     if (filters == null) {
                         MsgUtils.showToast(getActivity(), MsgUtils.TOAST_TYPE_MESSAGE, getString(R.string.Filter_unavailable), MsgUtils.ToastLength.SHORT);
                     }
-/*
+
                     else {
                         FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance(filters, new FilterDialogInterface() {
                             @Override
@@ -222,7 +222,7 @@ public class CategoryFragment extends Fragment {
                             MsgUtils.showToast(getActivity(), MsgUtils.TOAST_TYPE_INTERNAL_ERROR, null, MsgUtils.ToastLength.SHORT);
                         }
                     }
-*/
+
                 }
             });
 
@@ -416,6 +416,20 @@ public class CategoryFragment extends Fragment {
 
         url = String.format(EndPoints.PRODUCTS);
         url = url+ categoryName;
+        // Build request url
+        if (searchQuery != null) {
+            String newSearchQueryString;
+            try {
+                newSearchQueryString = URLEncoder.encode(searchQuery, "UTF-8");
+                url = url+ newSearchQueryString;
+            } catch (UnsupportedEncodingException e) {
+                Timber.e(e, "Unsupported encoding exception");
+                newSearchQueryString = URLEncoder.encode(searchQuery);
+            }
+            Timber.d("GetFirstProductsInCategory isSearch: %s", searchQuery);
+            // url += "?search=" + newSearchQueryString;
+        }
+
         if (sortItem != null) {
             url = url + "?filters=sortby%3D" + sortItem.getValue();
         }else{
@@ -454,6 +468,7 @@ public class CategoryFragment extends Fragment {
                             productsRecyclerAdapter.addProducts(response.getProducts());
                             productsMetadata = response.getSummary();
                             checkEmptyContent();
+                           // getFilters();
                             loadMoreProgress.setVisibility(View.GONE);
                         }
                     }, new Response.ErrorListener() {

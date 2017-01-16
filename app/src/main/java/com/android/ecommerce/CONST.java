@@ -46,6 +46,7 @@ public class CONST {
      * Volley request unknown status code
      */
     public static final int MissingStatusCode = 9999;
+    public static final String PRODUCT_SIMILAR = "similar_product";
 
     /**
      * Possible visibility states of layout parts.

@@ -215,6 +215,10 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
                 onCartSelected();
             }
         });
+        if (cartCountNotificationValue == CONST.DEFAULT_EMPTY_ID) {
+            // If first cart count check, then sync server cart data.
+          //  getCartCount(true);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -222,17 +226,6 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
         CompareFragment fragment = new CompareFragment();
         replaceFragment(fragment, CompareFragment.class.getSimpleName());    }
 
-    /**
-     * Loads cart count from server.
-     *
-     * @param initialize if true, then server run cart synchronization . Useful during app starts.
-     */
-
-    /**
-     * Method display cart count notification. Cart count notification remains hide if cart count is negative number.
-     *
-     * @param newCartCount cart count to show.
-     */
     private void showNotifyCount(int newCartCount) {
         cartCountNotificationValue = newCartCount;
         Timber.d("Update cart count notification: %d", cartCountNotificationValue);
@@ -253,6 +246,12 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
         }
     }
 
+
+    /**
+     * Prepare toolbar search view. Invoke search suggestions and handle search queries.
+     *
+     * @param searchItem corresponding menu item.
+     */
     private void prepareSearchView(@NonNull final MenuItem searchItem) {
         final SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setSubmitButtonEnabled(true);
@@ -274,30 +273,71 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
                 return true;
             }
         };
-        searchView.setOnQueryTextListener(queryTextListener);
 
-    }
-    @Override
-    public void prepareSearchSuggestions(List<SearchResult> arrayList) {
-        final String[] from = new String[]{"categories"};
-        final int[] to = new int[]{android.R.id.text1};
-
-        searchSuggestionsAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1,
-                null, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-        if (arrayList != null && !arrayList.isEmpty()) {
-            for (int i = 0; i < arrayList.size(); i++) {
-                if (!searchSuggestionsList.contains(arrayList.get(i).getName())) {
-                    searchSuggestionsList.add(arrayList.get(i).getName());
-                }
+        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+            @Override
+            public boolean onSuggestionSelect(int position) {
+                return false;
             }
-            searchSuggestionsAdapter.notifyDataSetChanged();
+
+            @Override
+            public boolean onSuggestionClick(int position) {
+                // Submit search suggestion query and hide search action view.
+                MatrixCursor c = (MatrixCursor) searchSuggestionsAdapter.getItem(position);
+                onSearchSubmitted(c.getString(1));
+                searchView.setQuery("", false);
+                searchView.setIconified(true);
+                searchItem.collapseActionView();
+                return true;
+            }
+        });
+        searchView.setOnQueryTextListener(queryTextListener);
+    }
+    private void onSearchSubmitted(String searchQuery) {
+        clearBackStack();
+        Timber.d("Called onSearchSubmitted with text: %s", searchQuery);
+        Fragment fragment = CategoryFragment.newInstance(searchQuery);
+        replaceFragment(fragment, CategoryFragment.class.getSimpleName());
+    }
+
+    /**
+     * Show user search whisperer with generated suggestions.
+     *
+     * @param query      actual search query
+     * @param searchView corresponding search action view.
+     */
+    private void showSearchSuggestions(String query, SearchView searchView) {
+        if (searchSuggestionsAdapter != null && searchSuggestionsList != null) {
+            Timber.d("Populate search adapter - mySuggestions.size(): %d", searchSuggestionsList.size());
+            final MatrixCursor c = new MatrixCursor(new String[]{BaseColumns._ID, "categories"});
+            for (int i = 0; i < searchSuggestionsList.size(); i++) {
+                if (searchSuggestionsList.get(i) != null && searchSuggestionsList.get(i).toLowerCase().startsWith(query.toLowerCase()))
+                    c.addRow(new Object[]{i, searchSuggestionsList.get(i)});
+            }
+            searchView.setSuggestionsAdapter(searchSuggestionsAdapter);
+            searchSuggestionsAdapter.changeCursor(c);
         } else {
-            Timber.e("Search suggestions loading failed.");
-            searchSuggestionsAdapter = null;
+            Timber.e("Search adapter is null or search data suggestions missing");
         }
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+         if (id == R.id.action_cart) {
+            onCartSelected();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+/*
     private void onSearchSubmitted(String searchQuery) {
         if(searchQuery == null || "".equals(searchQuery.trim())){
             return;
@@ -326,43 +366,10 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
 
         Timber.d("Called onSearchSubmitted with text: %s", searchQuery);
     }
+*/
 
 
 
-    /**
-     * Show user search whisperer with generated suggestions.
-     *
-     * @param query      actual search query
-     * @param searchView corresponding search action view.
-     */
-    private void showSearchSuggestions(String query, SearchView searchView) {
-        if (searchSuggestionsAdapter != null && searchSuggestionsList != null) {
-            Timber.d("Populate search adapter - mySuggestions.size(): %d", searchSuggestionsList.size());
-            final MatrixCursor c = new MatrixCursor(new String[]{BaseColumns._ID, "categories"});
-            for (int i = 0; i < searchSuggestionsList.size(); i++) {
-                if (searchSuggestionsList.get(i) != null && searchSuggestionsList.get(i).toLowerCase().startsWith(query.toLowerCase()))
-                    c.addRow(new Object[]{i, searchSuggestionsList.get(i)});
-            }
-            searchView.setSuggestionsAdapter(searchSuggestionsAdapter);
-            searchSuggestionsAdapter.changeCursor(c);
-        } else {
-            Timber.e("Search adapter is null or search data suggestions missing");
-        }
-    }
-
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-
-        return super.onOptionsItemSelected(item);
-    }
 
     /**
      * Add first fragment to the activity. This fragment will be attached to the bottom of the fragments stack.
@@ -416,6 +423,31 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
 
 
     @Override
+    public void prepareSearchSuggestions(List<DrawerItemCategory> navigation) {
+        final String[] from = new String[]{"categories"};
+        final int[] to = new int[]{android.R.id.text1};
+
+        searchSuggestionsAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1,
+                null, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        if (navigation != null && !navigation.isEmpty()) {
+                for(DrawerItemCategory item:navigation){
+                    for (DrawerItemSubCategory subItem: item.getSubcategories()){
+                        if (!searchSuggestionsList.contains(subItem.getName())) {
+                            searchSuggestionsList.add(subItem.getName());
+                        }
+                    }
+                }
+
+
+            searchSuggestionsAdapter.notifyDataSetChanged();
+        } else {
+            Timber.e("Search suggestions loading failed.");
+            searchSuggestionsAdapter = null;
+        }
+
+    }
+
+    @Override
     public void onDrawerBannersSelected() {
         clearBackStack();
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.main_content_frame);
@@ -432,6 +464,7 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
         AccountFragment fragment = new AccountFragment();
         replaceFragment(fragment, AccountFragment.class.getSimpleName());
     }
+
 
     @Override
     public void onBannerProductSelected(BannerProducts product) {
