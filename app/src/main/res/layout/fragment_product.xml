@@ -82,14 +82,45 @@
                             android:textSize="16sp"
                             tools:text="Test product name"/>
 
-                        <TextView
-                            android:id="@+id/product_price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="6dp"
-                            android:textSize="15sp"
-                            tools:text="995 eur"/>
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/base_margin_horizontal"
+                        android:paddingRight="@dimen/base_margin_horizontal"
+                        android:paddingTop="8dp">
+                        >
+                    <ImageView
+                        android:id="@+id/store_item_image"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/content_description_product_image"
+                        android:scaleType="fitCenter"
+                        android:layout_width="wrap_content"
+                        android:cropToPadding="true" />
+                    <TextView
+                        android:id="@+id/store_item_price"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        />
+                    <Button
+                        android:id="@+id/store_item_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="45dp"
+                        android:layout_gravity="right"
+                        android:text="@string/store_text"
+                        />
+                </LinearLayout>
 
 <!--
                     <View

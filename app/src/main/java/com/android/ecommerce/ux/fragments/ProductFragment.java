@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -24,6 +25,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.transition.TransitionInflater;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,12 +78,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,6 +137,10 @@ public class ProductFragment extends Fragment {
 
     private RecyclerView horizontal_recycler_view_featured;
     private HorizontalProductListAdapter horizontalAdapterFeatured;
+    public ImageView storeImage;
+    public TextView storePriceTV;
+    public Button buyNowBtn;
+    String minStoreUrl="";
 
     /**
      * Floating button allowing add/remove product from wishlist.
@@ -161,6 +170,7 @@ public class ProductFragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Timber.d("%s - onCreateView", this.getClass().getSimpleName());
@@ -174,9 +184,7 @@ public class ProductFragment extends Fragment {
         layoutEmpty = view.findViewById(R.id.product_empty_layout);
         contentScrollLayout = (ScrollView) view.findViewById(R.id.product_scroll_layout);
 
-
         productNameTv = (TextView) view.findViewById(R.id.product_name);
-        productPriceTv = (TextView) view.findViewById(R.id.product_price);
 
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         //setupViewPager(viewPager);
@@ -224,6 +232,21 @@ public class ProductFragment extends Fragment {
                 }
             }
         });
+
+        buyNowBtn = (Button) view.findViewById(R.id.store_item_button);
+        storePriceTV = (TextView) view.findViewById(R.id.store_item_price);
+        storeImage = (ImageView) view.findViewById(R.id.store_item_image);
+        buyNowBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                    setReenterTransition(TransitionInflater.from(getActivity()).inflateTransition(android.R.transition.fade));
+                }
+                ((MainActivity) getActivity()).onShopSelected(minStoreUrl);
+
+            }
+        });
+
 
         // prepareButtons(view);
         prepareProductImagesLayout(view);
@@ -444,8 +467,8 @@ public class ProductFragment extends Fragment {
         if (productData != null && metadata != null) {
             JsonObject properties = productData.get("Properties").getAsJsonObject();
 
-            MainActivity.setActionBarTitle(properties.get("Name").toString());
-            productNameTv.setText(properties.get("Name").toString());
+            MainActivity.setActionBarTitle(properties.get("Name").getAsString());
+            productNameTv.setText(properties.get("Name").getAsString());
 
             JsonArray images = properties.getAsJsonArray("images");
             Type listImageType = new TypeToken<List<ImageUrlFromApi>>() {}.getType();
@@ -460,6 +483,17 @@ public class ProductFragment extends Fragment {
             }
             Type listWebStoreType = new TypeToken<List<WebStoreProductDetail>>() {}.getType();
             List<WebStoreProductDetail> listOfWebStore =  new Gson().fromJson(productData.get("webStoreProductDetails").getAsJsonArray(), listWebStoreType);
+
+
+            JsonObject minWebStore = properties.get("MinPriceWebstore").getAsJsonObject();
+            storePriceTV.setText("Rs" + minWebStore.get("Price").getAsJsonObject().get("amount").getAsString());
+
+                Picasso.with(getContext()).load(minWebStore.get("storeLogo").getAsString())
+                        .placeholder(R.drawable.placeholder_loading)
+                        .into(storeImage);
+
+                //minStoreUrl = URLEncoder.encode(minWebStore.get("productUrl").toString(), "UTF-8") ;
+                minStoreUrl = minWebStore.get("productUrl").getAsString();
 
             setupViewPager(listOfWebStore, properties, metadata);
 

@@ -144,7 +144,7 @@ public class ProductDetailSpecs extends Fragment {
                 TextView tableRowValueText = new TextView(getContext());
                 tableRowValueText.setBackgroundColor(Color.WHITE);
                 tableRowValueText.setLayoutParams(params);
-                tableRowValueText.setText(properties.get(specLabel.getName()).toString());
+                tableRowValueText.setText(properties.get(specLabel.getName()).getAsString());
                 tableRowValueText.setPadding(20, 20, 20, 20);
 
                 tableRowSpec.addView(tableRowLabelText);

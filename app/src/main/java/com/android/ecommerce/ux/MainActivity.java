@@ -468,6 +468,11 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
 
     @Override
     public void onBannerProductSelected(BannerProducts product) {
+        Fragment fragment = ProductFragment.newInstance(Long.toString(product.getId()));
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            fragment.setReturnTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.fade));
+        }
+        replaceFragment(fragment, ProductFragment.class.getSimpleName());
 
     }
 
@@ -524,6 +529,13 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
     }
 
     public void onBannerSelected(Banner banner) {
+        String Id = banner.getProductUrl().replace("http://comparedunia.net.in/ProductController/Details/","");
+        Fragment fragment = ProductFragment.newInstance(Id);
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            fragment.setReturnTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.fade));
+        }
+        replaceFragment(fragment, ProductFragment.class.getSimpleName());
+
     }
 
     public void onAccountEditSelected() {

@@ -68,7 +68,7 @@ public class CompareFragment extends Fragment {
         obj4 = SettingsMy.getComareProduct(SettingsMy.COMPARE_4);
        // SettingsMy.setComareProduct(SettingsMy.COMPARE_1,null);
         if(obj1 != null){
-            metadata = SettingsMy.getSubCategory(obj1.get("SubcategoryId").toString());
+            metadata = SettingsMy.getSubCategory(obj1.get("SubcategoryId").getAsString());
         }
 
         // SET THIS AS CONTENT VIEW SO THAT WE CAN ABLE TO ADD MORE ELEMENT
@@ -178,14 +178,14 @@ public class CompareFragment extends Fragment {
                     TextView tableRowProductNameText1 = new TextView(getContext());
                     tableRowProductNameText1.setBackgroundColor(Color.WHITE);
                     tableRowProductNameText1.setLayoutParams(params);
-                    tableRowProductNameText1.setText(obj1.get("Name").toString());
+                    tableRowProductNameText1.setText(obj1.get("Name").getAsString());
                     tableRowProductNameText1.setPadding(20, 20, 20, 20);
                     tableRowProduct1.addView(tableRowProductNameText1);
 
                     TextView tableRowProductValue1 = new TextView(getContext());
                     tableRowProductValue1.setBackgroundColor(Color.WHITE);
                     tableRowProductValue1.setLayoutParams(params);
-                    tableRowProductValue1.setText(obj1.get(specLabel.getName())== null?"":obj1.get(specLabel.getName()).toString());
+                    tableRowProductValue1.setText(obj1.get(specLabel.getName())== null?"":obj1.get(specLabel.getName()).getAsString());
                     tableRowProductValue1.setPadding(20, 20, 20, 20);
                     tableRowProduct1.addView(tableRowProductValue1);
                     if(obj1.get(specLabel.getName())!= null){
@@ -196,14 +196,14 @@ public class CompareFragment extends Fragment {
                     TextView tableRowProductNameText2 = new TextView(getContext());
                     tableRowProductNameText2.setBackgroundColor(Color.WHITE);
                     tableRowProductNameText2.setLayoutParams(params);
-                    tableRowProductNameText2.setText(obj2.get("Name").toString());
+                    tableRowProductNameText2.setText(obj2.get("Name").getAsString());
                     tableRowProductNameText2.setPadding(20, 20, 20, 20);
                     tableRowProduct2.addView(tableRowProductNameText2);
 
                     TextView tableRowProductValue2 = new TextView(getContext());
                     tableRowProductValue2.setBackgroundColor(Color.WHITE);
                     tableRowProductValue2.setLayoutParams(params);
-                    tableRowProductValue2.setText(obj2.get(specLabel.getName())== null?"":obj2.get(specLabel.getName()).toString());
+                    tableRowProductValue2.setText(obj2.get(specLabel.getName())== null?"":obj2.get(specLabel.getName()).getAsString());
                     tableRowProductValue2.setPadding(20, 20, 20, 20);
                     tableRowProduct2.addView(tableRowProductValue2);
                     if(obj2.get(specLabel.getName())!= null){
@@ -215,14 +215,14 @@ public class CompareFragment extends Fragment {
                     TextView tableRowProductNameText3 = new TextView(getContext());
                     tableRowProductNameText3.setBackgroundColor(Color.WHITE);
                     tableRowProductNameText3.setLayoutParams(params);
-                    tableRowProductNameText3.setText(obj2.get("Name").toString());
+                    tableRowProductNameText3.setText(obj2.get("Name").getAsString());
                     tableRowProductNameText3.setPadding(20, 20, 20, 20);
                     tableRowProduct3.addView(tableRowProductNameText3);
 
                     TextView tableRowProductValue3 = new TextView(getContext());
                     tableRowProductValue3.setBackgroundColor(Color.WHITE);
                     tableRowProductValue3.setLayoutParams(params);
-                    tableRowProductValue3.setText(obj3.get(specLabel.getName())== null?"":obj3.get(specLabel.getName()).toString());
+                    tableRowProductValue3.setText(obj3.get(specLabel.getName())== null?"":obj3.get(specLabel.getName()).getAsString());
                     tableRowProductValue3.setPadding(20, 20, 20, 20);
                     tableRowProduct3.addView(tableRowProductValue3);
                     if(obj3.get(specLabel.getName())!= null){
@@ -234,14 +234,14 @@ public class CompareFragment extends Fragment {
                     TextView tableRowProductNameText4 = new TextView(getContext());
                     tableRowProductNameText4.setBackgroundColor(Color.WHITE);
                     tableRowProductNameText4.setLayoutParams(params);
-                    tableRowProductNameText4.setText(obj4.get("Name").toString());
+                    tableRowProductNameText4.setText(obj4.get("Name").getAsString());
                     tableRowProductNameText4.setPadding(20, 20, 20, 20);
                     tableRowProduct4.addView(tableRowProductNameText4);
 
                     TextView tableRowProductValue4 = new TextView(getContext());
                     tableRowProductValue4.setBackgroundColor(Color.WHITE);
                     tableRowProductValue4.setLayoutParams(params);
-                    tableRowProductValue4.setText(obj4.get(specLabel.getName())== null?"":obj4.get(specLabel.getName()).toString());
+                    tableRowProductValue4.setText(obj4.get(specLabel.getName())== null?"":obj4.get(specLabel.getName()).getAsString());
                     tableRowProductValue4.setPadding(20, 20, 20, 20);
                     tableRowProduct4.addView(tableRowProductValue4);
                     if(obj4.get(specLabel.getName())!= null){
