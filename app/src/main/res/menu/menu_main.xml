@@ -13,9 +13,11 @@
         app:showAsAction="ifRoom|collapseActionView" />
 
     <item
-        android:id="@+id/action_wish_list"
-        android:icon="@drawable/ic_favorite_border_white_24dp"
-        android:orderInCategory="1001"
-        android:title="@string/menu_action_wishlist"
-        app:showAsAction="ifRoom"/>
+        android:id="@+id/action_cart"
+        android:actionLayout="@layout/action_icon_compare"
+        android:icon="@drawable/ic_shopping_cart_white_24dp"
+        android:orderInCategory="100"
+        android:title="@string/menu_action_cart"
+        app:showAsAction="ifRoom" />
+
 </menu>

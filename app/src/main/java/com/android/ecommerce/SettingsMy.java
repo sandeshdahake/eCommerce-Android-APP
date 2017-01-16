@@ -12,6 +12,7 @@ import com.android.ecommerce.entities.product.ProductMetadata;
 import com.android.ecommerce.utils.MsgUtils;
 import com.android.ecommerce.utils.Utils;
 import com.android.ecommerce.ux.SplashActivity;
+import com.google.gson.JsonObject;
 
 import timber.log.Timber;
 
@@ -25,6 +26,11 @@ public class SettingsMy {
 
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
+
+    public static final String COMPARE_1 = "compare1";
+    public static final String COMPARE_2 = "compare2";
+    public static final String COMPARE_3 = "compare3";
+    public static final String COMPARE_4 = "compare4";
 
     private static final String TAG = SettingsMy.class.getSimpleName();
     private static Shop actualShop;
@@ -243,6 +249,29 @@ public class SettingsMy {
         String json = Utils.getGsonParser().toJson(productMetadata);
         SharedPreferences.Editor editor = getSettings().edit();
         editor.putString(subCategoryID, json);
+        editor.apply();
+    }
+    public static JsonObject getComareProduct(String id) {
+
+        SharedPreferences prefs = getSettings();
+        String json = prefs.getString(id, "");
+        if (json.isEmpty() || "null".equals(json)) {
+            Timber.e("%s - Returned null shop", TAG);
+            return null;
+        } else {
+            return Utils.getGsonParser().fromJson(json, JsonObject.class);
+        }
+    }
+
+
+    public static void setComareProduct(String id, JsonObject obj) {
+        if (obj != null)
+            Timber.d("%s - save selected compare product: %s", TAG, obj.toString());
+        else
+            Timber.d("%s - disable selected compare product", TAG);
+        String json = Utils.getGsonParser().toJson(obj);
+        SharedPreferences.Editor editor = getSettings().edit();
+        editor.putString(id, json);
         editor.apply();
     }
 }

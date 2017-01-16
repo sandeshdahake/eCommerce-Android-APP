@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -34,6 +35,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.ecommerce.CONST;
 import com.android.ecommerce.MyApplication;
@@ -166,15 +168,52 @@ public class ProductFragment extends Fragment {
         productPriceTv = (TextView) view.findViewById(R.id.product_price);
 
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+        //setupViewPager(viewPager);
 
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
-        tabLayout.post(new Runnable() {
+
+        FloatingActionButton btnFab = (FloatingActionButton) view.findViewById(R.id.btnFloatingActionCompare);
+        btnFab.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void run() {
-                tabLayout.setupWithViewPager(viewPager);
+            public void onClick(View v) {
+                JsonObject objectToSave = productJsonData.get("Properties").getAsJsonObject();
+
+                if(SettingsMy.getComareProduct(SettingsMy.COMPARE_1)==null){
+                    SettingsMy.setComareProduct(SettingsMy.COMPARE_1, objectToSave );
+                    Toast.makeText(getContext(), "Product Added for compare", Toast.LENGTH_SHORT).show();
+
+                }else if(SettingsMy.getComareProduct(SettingsMy.COMPARE_2)==null){
+                    if(SettingsMy.getComareProduct(SettingsMy.COMPARE_1).get("SubcategoryId").equals(objectToSave.get("SubcategoryId")) ){
+                        SettingsMy.setComareProduct(SettingsMy.COMPARE_2, objectToSave);
+                        Toast.makeText(getContext(), "Product Added for compare", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getContext(), "Products need to be of same category for comapre", Toast.LENGTH_SHORT).show();
+                    }
+
+                }else if (SettingsMy.getComareProduct(SettingsMy.COMPARE_3)==null){
+                    if(SettingsMy.getComareProduct(SettingsMy.COMPARE_1).get("SubcategoryId").equals(objectToSave.get("SubcategoryId")) ){
+                        SettingsMy.setComareProduct(SettingsMy.COMPARE_3, objectToSave);
+                        Toast.makeText(getContext(), "Product Added for compare", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getContext(), "Products need to be of same category for comapre", Toast.LENGTH_SHORT).show();
+                    }
+
+                }else if (SettingsMy.getComareProduct(SettingsMy.COMPARE_4)==null){
+                    if(SettingsMy.getComareProduct(SettingsMy.COMPARE_1).get("SubcategoryId").equals(objectToSave.get("SubcategoryId")) ){
+                        SettingsMy.setComareProduct(SettingsMy.COMPARE_4, objectToSave);
+                        Toast.makeText(getContext(), "Product Added for compare", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getContext(), "Products need to be of same category for comapre", Toast.LENGTH_SHORT).show();
+                    }
+
+                }else {
+                    Toast.makeText(getContext(), "We support 4 products comaprision. Please remove existing product", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
+
         // prepareButtons(view);
         prepareProductImagesLayout(view);
         prepareScrollViewAndWishlist(view);
@@ -381,7 +420,7 @@ public class ProductFragment extends Fragment {
             Type listWebStoreType = new TypeToken<List<WebStoreProductDetail>>() {}.getType();
             List<WebStoreProductDetail> listOfWebStore =  new Gson().fromJson(productData.get("webStoreProductDetails").getAsJsonArray(), listWebStoreType);
 
-          //  setupViewPager(listOfWebStore, properties, metadata);
+            setupViewPager(listOfWebStore, properties, metadata);
 
         } else {
             MsgUtils.showToast(getActivity(), MsgUtils.TOAST_TYPE_INTERNAL_ERROR, getString(R.string.Internal_error), MsgUtils.ToastLength.LONG);
@@ -389,12 +428,18 @@ public class ProductFragment extends Fragment {
         }
     }
 
-    private void setupViewPager(ViewPager viewPager) {
+
+    private void setupViewPager(List<WebStoreProductDetail> listOfWebStore, JsonObject properties, ProductMetadata metadata) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-       // adapter.addFragment(ProductDetailAffiliate.newInstance(), "Compare Prices");
-        adapter.addFragment(new ProductDetailSpecs(), "SPECS");
-        adapter.addFragment(new ProductDetailReview(), "Reviews");
+        adapter.addFragment(ProductDetailSpecs.newInstance(properties, metadata), "SPECS");
+        adapter.addFragment(ProductDetailAffiliate.newInstance(listOfWebStore), "Compare Prices");
         viewPager.setAdapter(adapter);
+        tabLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                tabLayout.setupWithViewPager(viewPager);
+            }
+        });
     }
 
 

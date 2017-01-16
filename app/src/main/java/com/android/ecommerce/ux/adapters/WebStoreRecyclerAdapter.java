@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.ecommerce.MyApplication;
@@ -80,9 +81,7 @@ public class WebStoreRecyclerAdapter extends RecyclerView.Adapter<WebStoreRecycl
         // - replace the contents of the view with that element
         holder.storePriceTV.setText(Integer.toString(holder.shop.getPrice().getAmount()));
 
-
-            Picasso.with(context).load(shop.getProductUrl())
-                    .fit().centerInside()
+            Picasso.with(context).load(shop.getStoreLogo())
                     .placeholder(R.drawable.placeholder_loading)
                     .into(holder.storeImage);
 
@@ -120,7 +119,7 @@ public class WebStoreRecyclerAdapter extends RecyclerView.Adapter<WebStoreRecycl
 
     // Provide a reference to the views for each data item
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ResizableImageView storeImage;
+        public ImageView storeImage;
         public TextView storePriceTV;
         public Button buyNowBtn;
         private WebStoreProductDetail shop;
@@ -129,8 +128,8 @@ public class WebStoreRecyclerAdapter extends RecyclerView.Adapter<WebStoreRecycl
             super(v);
             buyNowBtn = (Button) v.findViewById(R.id.store_item_button);
             storePriceTV = (TextView) v.findViewById(R.id.store_item_price);
-            storeImage = (ResizableImageView) v.findViewById(R.id.store_item_image);
-            v.setOnClickListener(new View.OnClickListener() {
+            storeImage = (ImageView) v.findViewById(R.id.store_item_image);
+            buyNowBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     recyclerInterface.onWebStoreSelected(v, shop.getProductUrl());

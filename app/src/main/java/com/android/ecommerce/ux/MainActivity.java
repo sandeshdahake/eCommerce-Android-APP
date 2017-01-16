@@ -63,11 +63,13 @@ import com.android.ecommerce.entities.drawerMenu.DrawerItemSubCategory;
 import com.android.ecommerce.entities.drawerMenu.DrawerResponse;
 import com.android.ecommerce.entities.product.ProductMetadata;
 import com.android.ecommerce.entities.product.WebStoreProductDetail;
+import com.android.ecommerce.interfaces.LoginDialogInterface;
 import com.android.ecommerce.utils.MsgUtils;
 import com.android.ecommerce.utils.Utils;
 import com.android.ecommerce.ux.fragments.AccountFragment;
 import com.android.ecommerce.ux.fragments.BannersFragment;
 import com.android.ecommerce.ux.fragments.CategoryFragment;
+import com.android.ecommerce.ux.fragments.CompareFragment;
 import com.android.ecommerce.ux.fragments.DrawerFragment;
 import com.android.ecommerce.ux.fragments.ProductFragment;
 import com.android.ecommerce.ux.fragments.WebViewFragment;
@@ -104,7 +106,14 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
      */
     private boolean isAppReadyToFinish = false;
 
-
+    /**
+     * Reference view showing number of products in shopping cart.
+     */
+    private TextView cartCountView;
+    /**
+     * Reference number of products in shopping cart.
+     */
+    private int cartCountNotificationValue = CONST.DEFAULT_EMPTY_ID;
 
     // Fields used in searchView.
     private SimpleCursorAdapter searchSuggestionsAdapter;
@@ -193,7 +202,55 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
         if (searchItem != null) {
             prepareSearchView(searchItem);
         }
+
+        // Prepare cart count info
+        MenuItem cartItem = menu.findItem(R.id.action_cart);
+        MenuItemCompat.setActionView(cartItem, R.layout.action_icon_compare);
+        View view = MenuItemCompat.getActionView(cartItem);
+        cartCountView = (TextView) view.findViewById(R.id.shopping_cart_notify);
+        showNotifyCount(cartCountNotificationValue);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCartSelected();
+            }
+        });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public void onCartSelected() {
+        CompareFragment fragment = new CompareFragment();
+        replaceFragment(fragment, CompareFragment.class.getSimpleName());    }
+
+    /**
+     * Loads cart count from server.
+     *
+     * @param initialize if true, then server run cart synchronization . Useful during app starts.
+     */
+
+    /**
+     * Method display cart count notification. Cart count notification remains hide if cart count is negative number.
+     *
+     * @param newCartCount cart count to show.
+     */
+    private void showNotifyCount(int newCartCount) {
+        cartCountNotificationValue = newCartCount;
+        Timber.d("Update cart count notification: %d", cartCountNotificationValue);
+        if (cartCountView != null) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (cartCountNotificationValue != 0 && cartCountNotificationValue != CONST.DEFAULT_EMPTY_ID) {
+                        cartCountView.setText(getString(R.string.format_number, cartCountNotificationValue));
+                        cartCountView.setVisibility(View.VISIBLE);
+                    } else {
+                        cartCountView.setVisibility(View.GONE);
+                    }
+                }
+            });
+        } else {
+            Timber.e("Cannot update cart count notification. Cart count view is null.");
+        }
     }
 
     private void prepareSearchView(@NonNull final MenuItem searchItem) {
@@ -303,10 +360,6 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_wish_list) {
-           // onWishlistSelected();
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -406,8 +459,25 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
 
     @Override
     public void onBackPressed() {
-
+        // If back button pressed, try close drawer if exist and is open. If drawer is already closed continue.
+        if (drawerFragment == null || !drawerFragment.onBackHide()) {
+            // If app should be finished or some fragment transaction still remains on backStack, let the system do the job.
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0 || isAppReadyToFinish)
+                super.onBackPressed();
+            else {
+                // BackStack is empty. For closing the app user have to tap the back button two times in two seconds.
+                MsgUtils.showToast(this, MsgUtils.TOAST_TYPE_MESSAGE, getString(R.string.Another_click_for_leaving_app), MsgUtils.ToastLength.SHORT);
+                isAppReadyToFinish = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        isAppReadyToFinish = false;
+                    }
+                }, 2000);
+            }
+        }
     }
+
 
     @Override
     protected void onResume() {
@@ -435,8 +505,6 @@ public class MainActivity extends AppCompatActivity implements DrawerFragment.Fr
     public void registerGcmOnServer() {
     }
 
-    public static void updateCartCountNotification() {
-    }
 
     public void onProductSelected(String id) {
         Fragment fragment = ProductFragment.newInstance(id);

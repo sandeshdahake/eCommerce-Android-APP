@@ -48,10 +48,10 @@ public class ProductDetailAffiliate extends Fragment {
     private WebStoreRecyclerAdapter adapter;
 
     public static ProductDetailAffiliate newInstance(List<WebStoreProductDetail> listOfWebStore) {
-        Bundle args = new Bundle();
-        args.putSerializable("storeList", (Serializable) listOfWebStore);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("storeList", (Serializable) listOfWebStore);
         ProductDetailAffiliate fragment = new ProductDetailAffiliate();
-        fragment.setArguments(args);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -107,12 +107,9 @@ public class ProductDetailAffiliate extends Fragment {
 
     private void checkEmptyContent() {
         if (adapter != null && adapter.getItemCount() > 0) {
-/*
+
             emptyContentView.setVisibility(View.INVISIBLE);
             storeRecycle.setVisibility(View.VISIBLE);
-*/
-            emptyContentView.setVisibility(View.VISIBLE);
-            storeRecycle.setVisibility(View.INVISIBLE);
 
         } else {
             emptyContentView.setVisibility(View.VISIBLE);
@@ -122,13 +119,13 @@ public class ProductDetailAffiliate extends Fragment {
 
 
     private void prepareShopRecycle(View view) {
-
         storeRecycle.addItemDecoration(new RecyclerMarginDecorator(getActivity(), RecyclerMarginDecorator.ORIENTATION.BOTH));
         storeRecycle.setItemAnimator(new DefaultItemAnimator());
+
         storeRecycle.setHasFixedSize(true);
         shopRecyclerLayoutManager = new LinearLayoutManager(getContext());
         storeRecycle.setLayoutManager(shopRecyclerLayoutManager);
-
+        storeRecycle.setAdapter(adapter);
     }
 
 }

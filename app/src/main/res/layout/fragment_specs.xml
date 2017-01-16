@@ -1,16 +1,58 @@
-<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.android.ecommerce.ux.fragments.ProductDetailSpecs">
-
+<?xml version="1.0" encoding="utf-8"?>
+<!--main.xml-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffccd0"
+    >
     <TextView
-        android:layout_width="wrap_content"
+        android:text="Countries List"
+        android:textColor="#b3000d"
+        android:gravity="center_vertical|center_horizontal"
+        android:textSize="26dip"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Product Specs"
-        android:textSize="40dp"
         android:textStyle="bold"
-        android:layout_centerInParent="true"
-        android:textColor="@color/colorAccent"/>
-
-</RelativeLayout >
+        android:background="#ffb0b6"
+        android:layout_marginBottom="5dip"
+        android:typeface="sans"/>
+    <RelativeLayout android:id="@+id/rl_country_heading"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#555555">
+        <TextView android:id="@+id/tv_11"
+            android:layout_width="70dip"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Abbr"
+            android:textStyle="normal|bold"
+            android:textColor="#FFFFFF"
+            android:textSize="18dip">
+        </TextView>
+        <TextView android:id="@+id/tv_12"
+            android:layout_width="150dip"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Comment"
+            android:textStyle="normal|bold"
+            android:textColor="#FFFFFF"
+            android:textSize="18dip"
+            android:layout_toRightOf="@+id/tv_11">
+        </TextView>
+    </RelativeLayout>
+    <LinearLayout android:id="@+id/ll_country"
+        android:layout_height="fill_parent" android:layout_width="fill_parent">
+        <ScrollView android:id="@+id/ScrollView11"
+            android:layout_width="fill_parent" android:layout_height="fill_parent"
+            android:fillViewport="true">
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:layout_margin="5dip">
+                <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:stretchColumns="0,1" android:id="@+id/country_table">
+                </TableLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

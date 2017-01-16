@@ -113,7 +113,7 @@ public class AccountFragment extends Fragment {
                         @Override
                         public void successfulLoginOrRegistration(User user) {
                             refreshScreen(user);
-                            MainActivity.updateCartCountNotification();
+                           // MainActivity.updateCartCountNotification();
                         }
                     });
                     loginDialogFragment.show(getFragmentManager(), LoginDialogFragment.class.getSimpleName());

@@ -101,6 +101,15 @@
 -->
 
                     <!-- Product info section-->
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/btnFloatingActionCompare"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|right"
+                        app:fabSize="normal"
+                        app:rippleColor="@android:color/background_dark"
+                        app:elevation="10dp" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1px"
@@ -120,10 +129,10 @@
                             app:tabMode="fixed"
                             app:tabGravity="fill"/>
 
-                        <android.support.v4.view.ViewPager
+                        <com.android.ecommerce.ux.views.WrapContentHeightViewPager
                             android:id="@+id/viewpager"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                               />
 
 
@@ -140,10 +149,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="220dp"/>
                 </LinearLayout>
+
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
-
 
     <view
         android:id="@+id/product_add_to_wish_list"
@@ -183,5 +192,6 @@
         android:layout_centerInParent="true"
         android:text="@string/Product_not_found"
         android:visibility="gone"/>
+
 
 </RelativeLayout>
