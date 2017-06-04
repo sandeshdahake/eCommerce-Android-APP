@@ -7,7 +7,10 @@ public class EndPoints {
      * Base server url.
      */
     //http://www.comparedunia.net.in/ProductAPI/subcategory_metadata?id=12
-    private static final String API_URL                 = "http://comparedunia.net.in";    // staging
+
+   // private static final String API_URL                 = "http://comparedunia.net.in";    // staging
+    private static final String API_URL                 = "http://185.73.38.62/SmartPrice3";    // staging
+
     public static final String NAVIGATION_DRAWER        = API_URL.concat("/ProductAPI/menu");
     public static final String BANNERS                  = API_URL.concat("/ProductAPI/homepage_slider");
     public static final String BANNERS_FEATURED         = API_URL.concat("/ProductAPI/featured_products");

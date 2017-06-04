@@ -20,8 +20,11 @@ import com.android.ecommerce.ux.views.ResizableImageView;
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import timber.log.Timber;
 
@@ -96,7 +99,16 @@ public class HorizontalProductListAdapter extends RecyclerView.Adapter<Horizonta
                 .fit().centerInside()
                 .into(holder.thumbnail);
         holder.name.setText(product.getName());
-        holder.price.setText("Rs"+ product.getPrice());
+/*
+        if(Integer.valueOf(product.getPrice()) == null){
+           holder.price.setText("Rs"+ product.getPrice());
+
+        }else{
+*/
+           // holder.price.setText("Rs"+ NumberFormat.getInstance().format(Integer.valueOf(product.getPrice())));
+            holder.price.setText("Rs"+ product.getPrice());
+
+     //   }
         holder.rating.setRating(product.getRating());
 
     }

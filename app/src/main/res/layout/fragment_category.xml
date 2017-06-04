@@ -39,14 +39,14 @@
                     android:paddingTop="10dp">
                 </ImageSwitcher>
 
-                <ImageView
+                <!--ImageView
                     android:id="@+id/category_filter_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="10dp"
-                    android:src="@drawable/filter_unselected"/>
+                    android:src="@drawable/filter_unselected"/-->
 
                 <Spinner
                     android:id="@+id/category_sort_spinner"

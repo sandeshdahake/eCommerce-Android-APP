@@ -79,7 +79,11 @@ public class WebStoreRecyclerAdapter extends RecyclerView.Adapter<WebStoreRecycl
         WebStoreProductDetail shop = getItem(position);
         holder.bindContent(shop);
         // - replace the contents of the view with that element
-        holder.storePriceTV.setText(Integer.toString(holder.shop.getPrice().getAmount()));
+        Integer price = holder.shop.getPrice().getAmount();
+        if(price != null){
+            holder.storePriceTV.setText( "Rs " + String.format("%,d", price));
+
+        }
 
             Picasso.with(context).load(shop.getStoreLogo())
                     .placeholder(R.drawable.placeholder_loading)

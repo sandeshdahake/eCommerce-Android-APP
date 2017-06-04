@@ -80,6 +80,7 @@ public class AccountFragment extends Fragment {
                     ((MainActivity) getActivity()).onAccountEditSelected();
             }
         });
+
         myOrdersBtn = (Button) view.findViewById(R.id.account_my_orders);
         myOrdersBtn.setOnClickListener(new OnSingleClickListener() {
             @Override
@@ -90,6 +91,7 @@ public class AccountFragment extends Fragment {
         });
 
 
+/*
         Button settingsBtn = (Button) view.findViewById(R.id.account_settings);
         settingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +101,9 @@ public class AccountFragment extends Fragment {
                     ((MainActivity) getActivity()).startSettingsFragment();
             }
         });
-        Button dispensingPlaces = (Button) view.findViewById(R.id.account_dispensing_places);
+*/
+       // Button dispensingPlaces = (Button) view.findViewById(R.id.account_dispensing_places);
+
 
         loginLogoutBtn = (Button) view.findViewById(R.id.account_login_logout_btn);
         loginLogoutBtn.setOnClickListener(new OnSingleClickListener() {

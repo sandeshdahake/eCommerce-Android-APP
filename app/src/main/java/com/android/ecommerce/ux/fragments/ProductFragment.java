@@ -191,7 +191,7 @@ public class ProductFragment extends Fragment {
 
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
 
-        FloatingActionButton btnFab = (FloatingActionButton) view.findViewById(R.id.btnFloatingActionCompare);
+        Button btnFab = (Button) view.findViewById(R.id.btnFloatingActionCompare);
         btnFab.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -308,6 +308,11 @@ public class ProductFragment extends Fragment {
 
             @Override
             public void onBannerProductSelected(BannerProducts product) {
+                Activity activity = getActivity();
+                if (activity instanceof MainActivity) {
+                    ((MainActivity) activity).onBannerProductSelected(product);
+                }
+
             }
         });
 
@@ -420,7 +425,7 @@ public class ProductFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                MsgUtils.logAndShowErrorMessage(getActivity(), error);
+              //  MsgUtils.logAndShowErrorMessage(getActivity(), error);
             }
         },null,null,CONST.BANNER_REQUESTS_FEATURED_TAG);
         getSimilarProductRequest.setRetryPolicy(MyApplication.getDefaultRetryPolice());

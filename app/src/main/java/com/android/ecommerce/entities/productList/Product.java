@@ -20,7 +20,7 @@ public class Product {
     private String image;
     @SerializedName("Rating")
     @Expose
-    private Integer rating;
+    private Float rating;
     @SerializedName("IsBestSeller")
     @Expose
     private String isBestSeller;
@@ -69,11 +69,11 @@ public class Product {
         this.image = image;
     }
 
-    public Integer getRating() {
+    public Float getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
 

@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,9 @@ import java.util.List;
 
 import timber.log.Timber;
 
+import static android.R.attr.layout_width;
+import static com.android.ecommerce.R.drawable.button_facebook_style;
+
 /**
  * Fragment handles shopping cart.
  */
@@ -78,8 +82,12 @@ public class CompareFragment extends Fragment {
         // THIS IS OUR MAIN LAYOUT
         LinearLayout mainLayout = new LinearLayout(getContext());
         mainLayout.setOrientation(LinearLayout.VERTICAL);
-        FloatingActionButton btnFab  = new FloatingActionButton(this.getContext());
-        btnFab.setOnClickListener(new View.OnClickListener() {
+        Button btnFab  = new Button(this.getContext());
+        btnFab.setGravity(Gravity.CENTER);
+        btnFab.setBackgroundColor(R.drawable.button_facebook_style);
+        btnFab.setText("Clear Products");
+
+                btnFab.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -92,25 +100,37 @@ public class CompareFragment extends Fragment {
                 SettingsMy.setComareProduct(SettingsMy.COMPARE_2,null);
                 SettingsMy.setComareProduct(SettingsMy.COMPARE_3,null);
                 SettingsMy.setComareProduct(SettingsMy.COMPARE_4,null);
+                if(tableLayoutProgrammatically != null)
                 tableLayoutProgrammatically.removeAllViewsInLayout();
             }
         });
+
         mainLayout.addView(btnFab);
         // ADD MAINLAYOUT TO SCROLLVIEW (contentView)
 
         contentView.addView(mainLayout);
 
         // SET CONTENT VIEW
+       if(obj1==null){
+           TextView emptyString = new TextView(getContext());
+           emptyString.setTextSize(18);
+           emptyString.setText("No Products to Compare");
+           // ADD TABLEROW AND LABEL HERE
 
-        tableLayoutProgrammatically = this.tableLayout(metadata);
+           mainLayout.addView(emptyString);
 
-        // JUST LABEL TEXTVIEW
-        TextView secondLabelTextView = new TextView(getContext());
-        secondLabelTextView.setTextSize(18);
-        // ADD TABLEROW AND LABEL HERE
+       }else{
+           tableLayoutProgrammatically = this.tableLayout(metadata);
 
-        mainLayout.addView(secondLabelTextView);
-        mainLayout.addView(tableLayoutProgrammatically);
+           // JUST LABEL TEXTVIEW
+           TextView secondLabelTextView = new TextView(getContext());
+           secondLabelTextView.setTextSize(18);
+           // ADD TABLEROW AND LABEL HERE
+
+           mainLayout.addView(secondLabelTextView);
+           mainLayout.addView(tableLayoutProgrammatically);
+
+       }
 
         return contentView;
     }
@@ -215,7 +235,7 @@ public class CompareFragment extends Fragment {
                     TextView tableRowProductNameText3 = new TextView(getContext());
                     tableRowProductNameText3.setBackgroundColor(Color.WHITE);
                     tableRowProductNameText3.setLayoutParams(params);
-                    tableRowProductNameText3.setText(obj2.get("Name").getAsString());
+                    tableRowProductNameText3.setText(obj3.get("Name").getAsString());
                     tableRowProductNameText3.setPadding(20, 20, 20, 20);
                     tableRowProduct3.addView(tableRowProductNameText3);
 

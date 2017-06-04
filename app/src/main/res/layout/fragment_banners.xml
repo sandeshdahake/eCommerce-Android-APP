@@ -25,16 +25,18 @@
             android:layout_centerInParent="true"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
+            android:textSize="18dp"
             android:layout_marginTop="8dp"
             android:gravity="left"
-            android:text="Featured Products" />
+            android:text="Featured Products"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccentDark"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/horizontal_recycler_featured"
             android:background="#fff"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="240dp"
             android:backgroundTint="@color/windowBackground"/>
 
 
@@ -42,17 +44,19 @@
             android:layout_centerInParent="true"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
+            android:textSize="18dp"
             android:layout_marginTop="8dp"
             android:gravity="left"
-            android:text="Popular Products" />
+            android:text="Popular Products"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccentDark"/>
 
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/horizontal_recycler_view_popular"
             android:background="#fff"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="240dp"
             android:backgroundTint="@color/windowBackground"/>
     </LinearLayout>
 

@@ -18,7 +18,8 @@
         android:contentDescription="@string/Shopping_cart"
         android:gravity="center"
         android:padding="3dp"
-        android:src="@drawable/ic_shopping_cart_white_24dp"/>
+        android:src="@drawable/scale"
+        />
 
     <TextView
         android:id="@+id/shopping_cart_notify"

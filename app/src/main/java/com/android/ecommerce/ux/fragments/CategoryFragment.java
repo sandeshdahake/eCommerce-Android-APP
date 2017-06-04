@@ -69,6 +69,7 @@ public class CategoryFragment extends Fragment {
     private static final String CATEGORY_NAME = "categoryName";
     private static final String CATEGORY_ID = "categoryId";
     private static final String SEARCH_QUERY = "search_query";
+    private static final String CATEGORY_LABEL = "label";
 
     /**
      * Prevent the sort selection callback during initialization.
@@ -101,9 +102,9 @@ public class CategoryFragment extends Fragment {
     private EndlessRecyclerScrollListener endlessRecyclerScrollListener;
 
     // Filters parameters
-    private Filters filters;
-    private String filterParameters = null;
-    private ImageView filterButton;
+    //private Filters filters;
+    //private String filterParameters = null;
+   // private ImageView filterButton;
 
     // Properties used to restore previous state
     private int toolbarOffset = -1;
@@ -118,11 +119,12 @@ public class CategoryFragment extends Fragment {
      * @param name       name of product list.
      * @return new fragment instance.
      */
-    public static CategoryFragment newInstance(long categoryId, String name) {
+    public static CategoryFragment newInstance(long categoryId, String name, String label) {
         Bundle args = new Bundle();
         args.putLong(CATEGORY_ID, categoryId);
         args.putString(CATEGORY_NAME, name);
         args.putString(SEARCH_QUERY, null);
+        args.putString(CATEGORY_LABEL,label);
         CategoryFragment fragment = new CategoryFragment();
         fragment.setArguments(args);
         return fragment;
@@ -136,7 +138,7 @@ public class CategoryFragment extends Fragment {
      */
     public static CategoryFragment newInstance(DrawerItemSubCategory drawerItemCategory) {
         if (drawerItemCategory != null)
-            return newInstance(drawerItemCategory.getId(), drawerItemCategory.getName());
+            return newInstance(drawerItemCategory.getId(), drawerItemCategory.getName(), drawerItemCategory.getLabel());
         else {
             Timber.e(new RuntimeException(), "Creating category with null arguments");
             return null;
@@ -172,6 +174,7 @@ public class CategoryFragment extends Fragment {
         if (startBundle != null) {
             categoryId = startBundle.getLong(CATEGORY_ID, 0);
             String categoryName = startBundle.getString(CATEGORY_NAME, "");
+            String categoryLable = startBundle.getString(CATEGORY_LABEL  , "");
             categoryType = startBundle.getString(TYPE, "category");
             searchQuery = startBundle.getString(SEARCH_QUERY, null);
             boolean isSearch = false;
@@ -181,7 +184,7 @@ public class CategoryFragment extends Fragment {
                 categoryName = searchQuery;
             }
 
-            Timber.d("Category type: %s. CategoryId: %d. FilterUrl: %s.", categoryType, categoryId, filterParameters);
+           // Timber.d("Category type: %s. CategoryId: %d. FilterUrl: %s.", categoryType, categoryId, filterParameters);
 
             AppBarLayout appBarLayout = (AppBarLayout) view.findViewById(R.id.category_appbar_layout);
             if (toolbarOffset != -1) appBarLayout.offsetTopAndBottom(toolbarOffset);
@@ -191,7 +194,8 @@ public class CategoryFragment extends Fragment {
                     toolbarOffset = i;
                 }
             });
-            MainActivity.setActionBarTitle(categoryName);
+            MainActivity.setActionBarTitle(categoryLable);
+/*
             this.filterButton = (ImageView) view.findViewById(R.id.category_filter_button);
             filterButton.setOnClickListener(new OnSingleClickListener() {
                 @Override
@@ -232,6 +236,7 @@ public class CategoryFragment extends Fragment {
             } else {
                 filterButton.setImageResource(R.drawable.filter_unselected);
             }
+*/
 
             // Opened first time (not form backstack)
             if (productsRecyclerAdapter == null || productsRecyclerAdapter.getItemCount() == 0) {
@@ -453,9 +458,11 @@ public class CategoryFragment extends Fragment {
         }
 
         // Add filters parameter if exist
+/*
         if (filterParameters != null && !filterParameters.isEmpty()) {
           //  url += filterParameters;
         }
+*/
 
         if(pageNum == null || pageNum >1){
             GsonRequest<ProductList> getProductsRequest = new GsonRequest<>(Request.Method.GET, url, null, ProductList.class,
