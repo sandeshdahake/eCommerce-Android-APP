@@ -95,7 +95,7 @@ public class HorizontalProductListAdapter extends RecyclerView.Adapter<Horizonta
         BannerProducts product = getBannerItem(position);
         holder.bindContent(product);
         Picasso.with(context).load(product.getImage())
-                .placeholder(R.drawable.placeholder_loading)
+                .placeholder(R.drawable.progress_animation)
                 .fit().centerInside()
                 .into(holder.thumbnail);
         holder.name.setText(product.getName());

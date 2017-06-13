@@ -35,6 +35,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -140,6 +141,8 @@ public class ProductFragment extends Fragment {
     public ImageView storeImage;
     public TextView storePriceTV;
     public Button buyNowBtn;
+    public RatingBar rating;
+
     String minStoreUrl="";
 
     /**
@@ -236,6 +239,8 @@ public class ProductFragment extends Fragment {
         buyNowBtn = (Button) view.findViewById(R.id.store_item_button);
         storePriceTV = (TextView) view.findViewById(R.id.store_item_price);
         storeImage = (ImageView) view.findViewById(R.id.store_item_image);
+        rating = (RatingBar) view.findViewById(R.id.ratingBar);
+
         buyNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -491,10 +496,10 @@ public class ProductFragment extends Fragment {
 
 
             JsonObject minWebStore = properties.get("MinPriceWebstore").getAsJsonObject();
-            storePriceTV.setText("Rs" + minWebStore.get("Price").getAsJsonObject().get("amount").getAsString());
-
+            storePriceTV.setText("Rs. " + minWebStore.get("Price").getAsJsonObject().get("amount").getAsString());
+          //  rating.setRating();
                 Picasso.with(getContext()).load(minWebStore.get("storeLogo").getAsString())
-                        .placeholder(R.drawable.placeholder_loading)
+                        .placeholder(R.drawable.progress_animation)
                         .into(storeImage);
 
                 //minStoreUrl = URLEncoder.encode(minWebStore.get("productUrl").toString(), "UTF-8") ;

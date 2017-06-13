@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.ecommerce.MyApplication;
@@ -88,22 +89,23 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
 /*
             Picasso.with(context).load(product.getImage())
                     .fit().centerInside()
-                    .placeholder(R.drawable.placeholder_loading)
+                    .placeholder(R.drawable.progress_animation)
                     .into(holder.productImage);
 */
 
         Picasso.with(context).load(product.getImage())
                 .fit().centerInside()
-                .placeholder(R.drawable.placeholder_loading)
+                .placeholder(R.drawable.progress_animation)
                 .into(holder.productImage);
 
 
         // Determine if product is on sale
             holder.productPriceTV.setVisibility(View.VISIBLE);
-            holder.productPriceDiscountTV.setVisibility(View.GONE);
-            holder.productPriceTV.setText(holder.product.getPrice());
+            holder.rating.setVisibility(View.VISIBLE);
+            holder.productPriceTV.setText("Rs. " + holder.product.getPrice());
             holder.productPriceTV.setPaintFlags(holder.productPriceTV.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             holder.productPriceTV.setTextColor(ContextCompat.getColor(context, R.color.textPrimary));
+            holder.rating.setRating(holder.product.getRating());
 
     }
 
@@ -142,14 +144,14 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
         public ResizableImageView productImage;
         public TextView productNameTV;
         public TextView productPriceTV;
-        public TextView productPriceDiscountTV;
+        public RatingBar rating;
         private Product product;
 
         public ViewHolder(View v, final CategoryRecyclerInterface categoryRecyclerInterface) {
             super(v);
             productNameTV = (TextView) v.findViewById(R.id.product_item_name);
             productPriceTV = (TextView) v.findViewById(R.id.product_item_price);
-            productPriceDiscountTV = (TextView) v.findViewById(R.id.product_item_discount);
+            rating = (RatingBar) v.findViewById(R.id.ratingBar);
             productImage = (ResizableImageView) v.findViewById(R.id.product_item_image);
             v.setOnClickListener(new View.OnClickListener() {
                 @Override

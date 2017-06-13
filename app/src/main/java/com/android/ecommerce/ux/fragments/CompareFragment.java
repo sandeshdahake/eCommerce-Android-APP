@@ -84,7 +84,7 @@ public class CompareFragment extends Fragment {
         mainLayout.setOrientation(LinearLayout.VERTICAL);
         Button btnFab  = new Button(this.getContext());
         btnFab.setGravity(Gravity.CENTER);
-        btnFab.setBackgroundColor(R.drawable.button_facebook_style);
+        //btnFab.setBackgroundColor(R.drawable.button_facebook_style);
         btnFab.setText("Clear Products");
 
                 btnFab.setOnClickListener(new View.OnClickListener() {

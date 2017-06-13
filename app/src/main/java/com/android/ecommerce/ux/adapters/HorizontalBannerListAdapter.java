@@ -86,7 +86,7 @@ public class HorizontalBannerListAdapter extends RecyclerView.Adapter<Horizontal
         holder.bindContent(banner);
 
         Picasso.with(context).load(banner.getImageUrl())
-                .placeholder(R.drawable.placeholder_loading)
+                .placeholder(R.drawable.progress_animation)
                 .fit().centerInside()
                 .into(holder.bannerImage);
     }

@@ -1,5 +1,6 @@
 package com.android.ecommerce.ux.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,15 +38,25 @@ public class WebViewFragment extends Fragment {
 
         View v=inflater.inflate(R.layout.fragment_webview, container, false);
         mWebView = (WebView) v.findViewById(R.id.webview);
+        final ProgressDialog pd = ProgressDialog.show(this.getContext(), "Compare Dunia", "Take a deep breath and happy shopping...",true);
+
+
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setSupportZoom(true);
+        mWebView.getSettings().setBuiltInZoomControls(true);
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                if(pd!=null && pd.isShowing())
+                {
+                    pd.dismiss();
+                }
+            }
+        });
+        mWebView.loadUrl("http://www.yahoo.co.in");
         String url = getArguments().getString("url");
         mWebView.loadUrl(url);
         // Enable Javascript
-        WebSettings webSettings = mWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-
-        // Force links and redirects to open in the WebView instead of in a browser
-        mWebView.setWebViewClient(new WebViewClient());
-
         return v;
     }
 

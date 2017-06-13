@@ -86,7 +86,7 @@ public class WebStoreRecyclerAdapter extends RecyclerView.Adapter<WebStoreRecycl
         }
 
             Picasso.with(context).load(shop.getStoreLogo())
-                    .placeholder(R.drawable.placeholder_loading)
+                    .placeholder(R.drawable.progress_animation)
                     .into(holder.storeImage);
 
     }

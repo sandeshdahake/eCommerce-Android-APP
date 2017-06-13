@@ -51,7 +51,7 @@ public class ProductImagesPagerAdapter extends PagerAdapter {
 
         Picasso.with(context).load(images.get(position))
                 .fit().centerInside()
-                .placeholder(R.drawable.placeholder_loading)
+                .placeholder(R.drawable.progress_animation)
                 .error(R.drawable.placeholder_error)
                 .into(imgDisplay);
 
