@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/content_description_background"
             android:scaleType="centerCrop"
-            android:src="@drawable/comparebanner"/>
+            android:src="@drawable/compare_banner"/>
 
         <LinearLayout
             android:id="@+id/splash_content_no_connection"

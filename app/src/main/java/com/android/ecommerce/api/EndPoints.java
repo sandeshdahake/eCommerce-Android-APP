@@ -8,8 +8,8 @@ public class EndPoints {
      */
     //http://www.comparedunia.net.in/ProductAPI/subcategory_metadata?id=12
 
-   // private static final String API_URL                 = "http://comparedunia.net.in";    // staging
-    private static final String API_URL                 = "http://185.73.38.62/SmartPrice3";    // staging
+    private static final String API_URL                 = "https://comparedunia.net";    // staging
+    //private static final String API_URL                 = "http://185.73.38.62/SmartPrice3";    // staging
 
     public static final String NAVIGATION_DRAWER        = API_URL.concat("/ProductAPI/menu");
     public static final String BANNERS                  = API_URL.concat("/ProductAPI/homepage_slider");
